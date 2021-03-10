@@ -39,7 +39,7 @@ export default {
         { prop: 'ysh', label: '已送货' },
         { prop: 'yshk', label: '预收货款' },
         { prop: 'wshk', label: '未收货款' },
-        { prop: 'yshk', label: '已收货款' },
+        { prop: 'okhk', label: '已收货款' },
       ],
       tableData: [],
       operate: [],
@@ -49,7 +49,7 @@ export default {
   },
   async created() {
     this.loading = true
-    await this.getBooks()
+    await this.getList()
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
@@ -78,14 +78,14 @@ export default {
       this.editBookID = val.row.id
     },
     handleDelete(val) {
-      this.$confirm('此操作将永久删除该图书, 是否继续?', '提示', {
+      this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await client.deleteBook(val.row.id)
+        const res = await client.deleteClient(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getBooks()
+          this.getList()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -96,7 +96,7 @@ export default {
     rowClick() {},
     editClose() {
       this.showEdit = false
-      this.getBooks()
+      this.getList()
     },
   },
 }
