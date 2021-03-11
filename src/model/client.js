@@ -26,7 +26,7 @@ class Client {
   }
 
   async deleteClient(id) {
-    const res = await _delete(`v1/client/${id}`)
+    const res = await _delete(`v1/client/delete/${id}`)
     return res
   }
 

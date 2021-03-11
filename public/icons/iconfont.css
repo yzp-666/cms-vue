@@ -1,0 +1,29 @@
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1615480317485'); /* IE9 */
+  src: url('iconfont.eot?t=1615480317485#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAQsAAsAAAAACUgAAAPdAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDDAqGFIUnATYCJAMQCwoABCAFhG0HRRsGCBHVm0XJfhzkZpPr8R56S44oTT8HUdXUnrsV+GRgCiDLDgHJAVKAgF9Jyfed60jVqAg1knt+59EXfmmc5igA/ueY6fL5wPLTZnPJDorijRJoYNtFhLbwnWEbHpjfIruII2vJl0MAg0jSkYqVa9qxokDbCSDdOndsjTWlQtXgBKvUXHKoQqZjwqpN1C7DNP/95VN+sYKGSQftWrdDpXaUfbf13Xbd4XI0cxGw4QyAdBToQDqgQBqVmuqjh6F0dAzDpEisL1QIvNvucrmorazF/ssDQUMHMYNE7iy2oFA/JDalQuDdNiXaEbJZFTqPVltbATcQA6QmIwuHYWB9kk84uYt7ik/RnodsMi/waPXAY/fi7t7NvX3b7rhTyv+2Hz8nwDYvaNU9dE+bM2dO7qSLN3fm7bp1yXnhxg7H9uvnWxsyN9CY7Q9lNBPRVCjckObCsWGY/bOGHi1+6J70pCi2v+Th29Gly+7duue8c+NOBPchrLybO+ng0a15244dch44ssWx+fD+NnMlL2xe4NrAjTtl0ba0TYdszgMJcwLmBK1Lcs4L3Hm3Mtip045VmRe45n+FDMrG35/Hi8IdPbVOTmcnh6+JrymdyhTu+ILyYR07FhkrVcytSrYyh6R1atCgW3rJhpXT860YEvuBKZWn8KHSA5ZUXsKDml/sdnOroq3MIp2OFjW3Sv0R1nyfQvQdmuWelgKO0zl/Q5PqZom9b287DbQevaRBVjo19G/O/LROIePHh8bU/lY/phnhfwtEoblfIiS90z9H6M2KmQXS418VeFmhdMGMijf92od7BBdW5au64powSxq+v8KCd0QdHF6w3vxTqrCfo2nxFXb69hZ7VlKdsL85E9KHPuPXy1tbm+kFgOuNPkgPA9dPH+kZ+a5P133+p83Qdp8e3NKr5B+r7blOPO7V4T/ndL1R9EvDigat2X8Pu2WLMrlIrZTOoyzLoujzLgIaYGAvuEA2X55CSAJaZ4JgJSAGDQsRoGMlHqmw6WDCRkEwY6UMGKRRxWTDbxGVotyAVMayIHizDTQ8OQY63lxBKuwTMBHIFzDjLToY5IrfKW0k2pJUBYYWODJ/SnZdPNGKCrJvCO9Jc5Lr41/gkrzUVk02esUChtijfEIn4snzOtPAXA3TtNLGa4aVKopsfV37sgeq7DofFBUYWuAI8yeSXRfvjheVe/sbwnvSXNPUoH2BS1qeaKloWiCvoqVV06WsLp/QIeL5rTyvMzGwBkw4tBJb+UYZVipij8DWU3OdfFtRNb1kvsMLgAE6vxJNdFFiwtLauXcBq3aYIIiSL/2g58MBAAAA') format('woff2'),
+  url('iconfont.woff?t=1615480317485') format('woff'),
+  url('iconfont.ttf?t=1615480317485') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+ */
+  url('iconfont.svg?t=1615480317485#iconfont') format('svg'); /* iOS 4.1- */
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-adduser:before {
+  content: "\e7ae";
+}
+
+.icon-deleteuser:before {
+  content: "\e7af";
+}
+
+.icon-team:before {
+  content: "\e7b0";
+}
+

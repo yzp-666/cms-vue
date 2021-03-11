@@ -1,8 +1,26 @@
 <template>
   <div>
     <!-- 列表页面 -->
-    <div class="container" v-if="!showEdit">
+    <div class="container">
       <div class="header"><div class="title">客户列表</div></div>
+      <div class="handle">
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <div class="el-row-left">
+              <el-button type="primary" @click="loadData">
+                搜索
+              </el-button>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="el-row-right">
+              <el-button type="primary" @click="create">
+                新增客户
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
       <!-- 表格 -->
       <lin-table
         :tableColumn="tableColumn"
@@ -14,26 +32,25 @@
         v-loading="loading"
       ></lin-table>
     </div>
-
-    <!-- 编辑页面 -->
-    <client-create v-else @editClose="editClose" :editBookID="editBookID"></client-create>
+    <!-- 编辑弹框 -->
+    <creat-model :dialogFormVisible="showEdit" :title="modelTitle" @close="editClose"></creat-model>
   </div>
 </template>
 
 <script>
 import client from '@/model/client' // api
 import LinTable from '@/component/base/table/lin-table'
-import ClientCreate from './model/create-model' // 编辑弹框
+import CreatModel from './model/model'
 
 export default {
   components: {
     LinTable,
-    ClientCreate,
+    CreatModel,
   },
   data() {
     return {
       tableColumn: [
-        { prop: 'khName', label: '客户名称' },
+        { prop: 'name', label: '客户名称' },
         { prop: 'phone', label: '电话' },
         { prop: 'htje', label: '合同金额' },
         { prop: 'ysh', label: '已送货' },
@@ -45,24 +62,25 @@ export default {
       operate: [],
       showEdit: false,
       editBookID: 1,
+      dialogFormVisible: false,
+      modelTitle: '新增客户',
     }
   },
   async created() {
-    this.loading = true
-    await this.getList()
+    await this.loadData()
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        permission: '删除图书',
+        permission: '删除客户',
       },
     ]
-    this.loading = false
   },
   methods: {
-    async getList() {
+    async loadData() {
+      this.loading = true
       try {
         const clients = await client.getList()
         this.tableData = clients
@@ -71,11 +89,7 @@ export default {
           this.tableData = []
         }
       }
-    },
-    handleEdit(val) {
-      console.log('val', val)
-      this.showEdit = true
-      this.editBookID = val.row.id
+      this.loading = false
     },
     handleDelete(val) {
       this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {
@@ -85,7 +99,7 @@ export default {
       }).then(async () => {
         const res = await client.deleteClient(val.row.id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getList()
+          this.loadData()
           this.$message({
             type: 'success',
             message: `${res.message}`,
@@ -94,9 +108,21 @@ export default {
       })
     },
     rowClick() {},
+    create() {
+      this.showEdit = true
+      this.modelTitle = '新增客户'
+    },
+    // 编辑
+    handleEdit(val) {
+      console.log('val', val)
+      this.showEdit = true
+      this.modelTitle = '编辑客户'
+      // this.editBookID = val.row.id
+    },
+    // 关闭编辑
     editClose() {
       this.showEdit = false
-      this.getList()
+      this.loadData()
     },
   },
 }

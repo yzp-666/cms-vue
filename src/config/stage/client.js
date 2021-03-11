@@ -3,9 +3,9 @@ const clientRouter = {
   name: null,
   title: '客户管理',
   type: 'folder', // 类型: folder, tab, view
-  icon: 'iconfont icon-tushuguanli',
+  icon: 'iconfont icon-team',
   filePath: 'view/book/', // 文件路径
-  order: 3,
+  order: 4,
   inNav: true,
   children: [
     {
@@ -16,6 +16,7 @@ const clientRouter = {
       filePath: 'view/client/client-list.vue',
       inNav: true,
       icon: 'iconfont icon-tushuguanli',
+      permission: ['查询所有客户'],
     },
   ],
 }

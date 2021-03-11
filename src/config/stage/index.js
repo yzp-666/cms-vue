@@ -24,7 +24,7 @@ let homeRouter = [
     filePath: 'view/log/log.vue',
     inNav: true,
     icon: 'iconfont icon-rizhiguanli',
-    order: 2,
+    order: 9,
     permission: ['查询所有日志'],
   },
   {

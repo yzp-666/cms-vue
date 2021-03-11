@@ -5,7 +5,7 @@ const bookRouter = {
   type: 'folder', // 类型: folder, tab, view
   icon: 'iconfont icon-tushuguanli',
   filePath: 'view/book/', // 文件路径
-  order: 2,
+  order: 3,
   inNav: true,
   children: [
     {
