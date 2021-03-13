@@ -1,19 +1,40 @@
 <template>
   <div>
     <!--    表单-->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="handleClose" width="60%">
-      <el-form :model="form">
+    <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="handleClose" width="40%">
+      <el-form :model="form" size="mini" style="padding: 0 30px">
         <el-form-item label="客户名称" :label-width="formLabelWidth">
           <el-input v-model="form.name" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item label="客户类型" :label-width="formLabelWidth">
           <div class="client_type">
-            <el-select size="medium" v-model="form.type" placeholder="请选择">
+            <el-select v-model="form.typeId" placeholder="请选择">
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label"> </el-option>
             </el-select>
             <el-button @click="getClientTypeList" style="margin-left: 10px">搜索</el-button>
             <l-icon :name="'plus-circle'" :color="'#3963bc'" style="margin-left: 10px" @click="showClientType"></l-icon>
           </div>
+        </el-form-item>
+        <el-form-item label="期初欠款" :label-width="formLabelWidth">
+          <el-input v-model="form.htje" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="电话" :label-width="formLabelWidth">
+          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="备用电话" :label-width="formLabelWidth">
+          <el-input v-model="form.byphone" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="传真" :label-width="formLabelWidth">
+          <el-input v-model="form.fax" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="邮箱" :label-width="formLabelWidth">
+          <el-input v-model="form.email" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="备注" :label-width="formLabelWidth">
+          <el-input v-model="form.remark" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="地址" :label-width="formLabelWidth">
+          <el-input v-model="form.address" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
 
@@ -61,11 +82,17 @@ export default {
       // dialogFormVisible: false,
       form: {
         name: '',
-        type: '',
+        typeId: '',
+        htje: '',
+        phone: '',
+        byPhone: '',
+        email: '',
+        remark: '',
+        addressIds: '',
       },
       options: [],
       clientTypeVisible: false,
-      formLabelWidth: '120px',
+      formLabelWidth: '100px',
       inputVisible: false,
       inputValue: '',
     }
