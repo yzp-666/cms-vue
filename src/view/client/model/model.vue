@@ -1,45 +1,49 @@
 <template>
   <div>
     <!--    表单-->
-    <el-dialog :title="title" :visible.sync="dialogFormVisible" :before-close="handleClose" width="40%">
-      <el-form :model="form" size="mini" style="padding: 0 30px">
-        <el-form-item label="客户名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
+    <el-dialog
+      :title="status === 'creact' ? '创建客户' : '编辑客户'"
+      :visible.sync="dialogFormVisible"
+      :before-close="handleClose"
+      width="30%"
+    >
+      <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
+        <el-form-item label="客户名称" prop="name" :label-width="formLabelWidth">
+          <el-input v-model="form.name"></el-input>
         </el-form-item>
-        <el-form-item label="客户类型" :label-width="formLabelWidth">
+        <el-form-item label="客户类型" prop="typeId" :label-width="formLabelWidth">
           <div class="client_type">
             <el-select v-model="form.typeId" placeholder="请选择">
-              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.label"> </el-option>
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
             </el-select>
-            <el-button @click="getClientTypeList" style="margin-left: 10px">搜索</el-button>
             <l-icon :name="'plus-circle'" :color="'#3963bc'" style="margin-left: 10px" @click="showClientType"></l-icon>
           </div>
         </el-form-item>
-        <el-form-item label="期初欠款" :label-width="formLabelWidth">
-          <el-input v-model="form.htje" autocomplete="off"></el-input>
+        <el-form-item label="期初欠款" prop="htje" :label-width="formLabelWidth">
+          <el-input v-model="form.htje"></el-input>
         </el-form-item>
-        <el-form-item label="电话" :label-width="formLabelWidth">
-          <el-input v-model="form.phone" autocomplete="off"></el-input>
+        <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
+          <el-input v-model="form.phone"></el-input>
         </el-form-item>
-        <el-form-item label="备用电话" :label-width="formLabelWidth">
-          <el-input v-model="form.byphone" autocomplete="off"></el-input>
+        <el-form-item label="备用电话" prop="byphone" :label-width="formLabelWidth">
+          <el-input v-model="form.byphone"></el-input>
         </el-form-item>
-        <el-form-item label="传真" :label-width="formLabelWidth">
-          <el-input v-model="form.fax" autocomplete="off"></el-input>
+        <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
+          <el-input v-model="form.address"></el-input>
         </el-form-item>
-        <el-form-item label="邮箱" :label-width="formLabelWidth">
-          <el-input v-model="form.email" autocomplete="off"></el-input>
+        <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+          <el-input v-model="form.email"></el-input>
         </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth">
-          <el-input v-model="form.remark" autocomplete="off"></el-input>
+        <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
+          <el-input v-model="form.fax"></el-input>
         </el-form-item>
-        <el-form-item label="地址" :label-width="formLabelWidth">
-          <el-input v-model="form.address" autocomplete="off"></el-input>
+        <el-form-item label="备注" prop="remark" :label-width="formLabelWidth">
+          <el-input type="textarea" v-model="form.remark"></el-input>
         </el-form-item>
       </el-form>
 
       <!--  添加客户属性  -->
-      <el-dialog width="50%" title="客户类型" :visible.sync="clientTypeVisible" append-to-body>
+      <el-dialog width="36%" title="客户类型" :visible.sync="clientTypeVisible" append-to-body>
         <div class="el-tag-content">
           <el-tag
             :key="tag.value"
@@ -76,11 +80,12 @@
 import client from '@/model/client' // api
 
 export default {
-  props: ['dialogFormVisible', 'title'],
+  props: ['dialogFormVisible', 'id', 'row', 'status'],
   data() {
     return {
       // dialogFormVisible: false,
       form: {
+        id: '',
         name: '',
         typeId: '',
         htje: '',
@@ -100,10 +105,33 @@ export default {
   async created() {
     await this.getClientTypeList()
   },
+  watch: {
+    dialogFormVisible(val) {
+      if (val && this.status === 'edit') {
+        this.getDetails()
+      }
+    },
+  },
   methods: {
     handleClose() {
+      // console.log('close')
+      this.$refs.form.resetFields()
       this.$emit('close')
     },
+
+    // 获取客户信息
+    async getDetails() {
+      try {
+        const res = await client.getDetails(this.id)
+        this.$nextTick(() => {
+          this.form = JSON.parse(JSON.stringify(res))
+        })
+      } catch (e) {
+        this.$message.success(e.message)
+        this.handleClose()
+      }
+    },
+
     /**
      * 验证参数
      * 提交
@@ -112,11 +140,21 @@ export default {
     async submit() {
       console.log(this.form) // 验证参数
       try {
-        const create = await client.createClient(this.form)
-        console.log(create)
-        this.$message.success(create.message)
-        this.$emit('close')
+        if (this.status === 'create') {
+          console.log('create')
+          const create = await client.createClient(this.form)
+          this.$message.success(create.message)
+          this.handleClose()
+        } else if (this.status === 'edit') {
+          console.log('edit')
+          console.log(this.id)
+          console.log(this.form)
+          const edit = await client.editClient(this.id, this.form)
+          this.$message.success(edit.message)
+          this.handleClose()
+        }
       } catch (e) {
+        console.log(e)
         this.$message.error('客户添加失败，请检测填写信息')
       }
     },
@@ -125,7 +163,6 @@ export default {
      */
     async getClientTypeList() {
       const clientTypeList = await client.getClientTypeList()
-      console.log(clientTypeList)
       this.options = clientTypeList
     },
     showClientType() {
@@ -184,21 +221,7 @@ export default {
   display: flex;
   align-items: center;
 }
-.el-tag-content {
-  display: flex;
-  flex-flow: wrap;
-  justify-content: flex-start;
-  align-items: center;
-}
-.el-tag {
-  height: 32px;
-  line-height: 30px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-.el-tag-content > .el-button {
-  margin-bottom: 10px;
-}
+
 .button-new-tag {
   margin-left: 10px;
   height: 32px;

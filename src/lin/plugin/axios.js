@@ -95,7 +95,7 @@ _axios.interceptors.request.use(
     } else {
       // TODO: 其他类型请求数据格式处理
       /* eslint-disable-next-line */
-      console.warn(`其他请求类型: ${reqConfig.method}, 暂无自动处理`)
+      // console.warn(`其他请求类型: ${reqConfig.method}, 暂无自动处理`)
     }
     // step2: permission 处理
     if (reqConfig.url === 'cms/user/refresh') {

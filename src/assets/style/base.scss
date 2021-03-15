@@ -1,3 +1,4 @@
+// 自定义class
 .handle{
   padding: 0 15px;
   margin: 5px 0 15px;
@@ -10,4 +11,27 @@
 .el-row-right{
   display: flex;
   justify-content: flex-end;
+}
+
+// form
+.el-form-item{
+  margin-bottom: 0 !important;
+}
+
+  // el-tag
+.el-tag-content {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+.el-tag {
+  height: 32px;
+  line-height: 30px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+.el-tag-content > .el-button {
+  margin-bottom: 10px;
 }

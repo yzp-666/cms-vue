@@ -33,7 +33,12 @@
       ></lin-table>
     </div>
     <!-- 编辑弹框 -->
-    <creat-model :dialogFormVisible="showEdit" :title="modelTitle" @close="editClose"></creat-model>
+    <creat-model
+      :dialogFormVisible="showEdit"
+      :status="modelStatus"
+      :id="editClientID"
+      @close="editClose"
+    ></creat-model>
   </div>
 </template>
 
@@ -63,7 +68,8 @@ export default {
       showEdit: false,
       editBookID: 1,
       dialogFormVisible: false,
-      modelTitle: '新增客户',
+      modelStatus: 'create',
+      editClientID: '',
     }
   },
   async created() {
@@ -110,14 +116,13 @@ export default {
     rowClick() {},
     create() {
       this.showEdit = true
-      this.modelTitle = '新增客户'
+      this.modelStatus = 'create'
     },
     // 编辑
     handleEdit(val) {
-      console.log('val', val)
       this.showEdit = true
-      this.modelTitle = '编辑客户'
-      // this.editBookID = val.row.id
+      this.modelStatus = 'edit'
+      this.editClientID = val.row.id
     },
     // 关闭编辑
     editClose() {

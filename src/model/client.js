@@ -15,22 +15,25 @@ class Client {
   // 在这里通过 async await 语法糖让代码同步执行
   // 1. await 一定要搭配 async 来使用
   // 2. await 后面跟的是一个 Promise 对象
-  async getClient(id) {
+  // 获取单个客户
+  async getDetails(id) {
     const res = await get(`v1/client/${id}`)
     return res
   }
 
-  // 编辑
+  // 编辑客户
   async editClient(id, info) {
     const res = await put(`v1/client/${id}`, info)
     return res
   }
 
+  // 删除客户
   async deleteClient(id) {
     const res = await _delete(`v1/client/delete/${id}`)
     return res
   }
 
+  // 获取客户列表
   async getList() {
     return _axios({
       method: 'get',
