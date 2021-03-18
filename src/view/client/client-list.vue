@@ -30,6 +30,9 @@
         @handleDelete="handleDelete"
         @row-click="rowClick"
         v-loading="loading"
+        :pagination="pagination"
+        @handleSizeChange="handleSizeChange"
+        @currentChange="currentChange"
       ></lin-table>
     </div>
     <!-- 编辑弹框 -->
@@ -63,6 +66,12 @@ export default {
         { prop: 'wshk', label: '未收货款' },
         { prop: 'okhk', label: '已收货款' },
       ],
+      pagination: {
+        pageSize: 10,
+        pageTotal: 0, // 总数
+        currentPage: 1,
+        pageSizes: [10, 15, 20, 50],
+      },
       tableData: [],
       operate: [],
       showEdit: false,
@@ -87,15 +96,32 @@ export default {
   methods: {
     async loadData() {
       this.loading = true
+      const pagination = {
+        pageSize: this.pagination.pageSize,
+        currentPage: this.pagination.currentPage,
+      }
       try {
-        const clients = await client.getList()
-        this.tableData = clients
+        const clients = await client.getList(pagination)
+        this.tableData = clients.rows
+        this.pagination.pageTotal = clients.count
       } catch (error) {
         if (error.code === 10020) {
           this.tableData = []
         }
       }
       this.loading = false
+    },
+    // 条数改变
+    handleSizeChange(val) {
+      console.log(val)
+      this.$set(this.pagination, 'pageSize', val)
+      this.loadData()
+    },
+    // 页数改变
+    currentChange(page) {
+      console.log(page)
+      this.$set(this.pagination, 'currentPage', page)
+      this.loadData()
     },
     handleDelete(val) {
       this.$confirm('此操作将永久删除该客户, 是否继续?', '提示', {

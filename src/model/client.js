@@ -34,11 +34,12 @@ class Client {
   }
 
   // 获取客户列表
-  async getList() {
+  async getList(pagination) {
     return _axios({
       method: 'get',
       url: 'v1/client',
       handleError: true,
+      params: pagination,
     })
   }
 

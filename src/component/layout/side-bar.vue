@@ -1,9 +1,9 @@
 <template>
   <div class="app-sidebar">
-    <!--    <div class="logo" v-if="!elMenuCollapse"><img src="../../assets/image/logo.png" alt="" /></div>-->
-    <!--    <div class="mobile-logo" v-else><img src="../../assets/image/mobile-logo.png" alt="" /></div>-->
-    <div class="logo" v-if="!elMenuCollapse"><div>和顺</div></div>
-    <div class="mobile-logo" v-else><span>和</span></div>
+    <div class="logo" v-if="!elMenuCollapse"><img src="../../assets/image/logo.png" alt="" /></div>
+    <div class="mobile-logo" v-else><img src="../../assets/image/mobile-logo.png" alt="" /></div>
+    <!--    <div class="logo" v-if="!elMenuCollapse"><div></div></div>-->
+    <!--    <div class="mobile-logo" v-else><span>和</span></div>-->
     <div style="margin-bottom:50px">
       <div v-if="showSidebarSearch" style="margin-top: 15px">
         <div class="search-display" v-if="!showSearchList" @click="toSearch"><i class="el-icon-search"></i></div>

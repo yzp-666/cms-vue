@@ -15,7 +15,7 @@ const clientRouter = {
       route: '/client/list',
       filePath: 'view/client/client-list.vue',
       inNav: true,
-      icon: 'iconfont icon-tushuguanli',
+      icon: 'iconfont icon-team',
       permission: ['查询所有客户'],
     },
   ],

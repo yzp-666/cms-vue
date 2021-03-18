@@ -2,10 +2,10 @@
   <div>
     <!--    表单-->
     <el-dialog
-      :title="status === 'creact' ? '创建客户' : '编辑客户'"
+      :title="status === 'create' ? '创建客户' : '编辑客户'"
       :visible.sync="dialogFormVisible"
       :before-close="handleClose"
-      width="30%"
+      width="55%"
     >
       <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
         <el-form-item label="客户名称" prop="name" :label-width="formLabelWidth">
@@ -26,10 +26,32 @@
           <el-input v-model="form.phone"></el-input>
         </el-form-item>
         <el-form-item label="备用电话" prop="byphone" :label-width="formLabelWidth">
-          <el-input v-model="form.byphone"></el-input>
+          <el-input v-model="form.byPhone"></el-input>
         </el-form-item>
         <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-          <el-input v-model="form.address"></el-input>
+          <div v-if="status === 'create'">
+            <!--            <el-col :span="3" >-->
+            <!--              <div style="text-align: right">省/市/区</div>-->
+            <!--            </el-col>-->
+            <!--            <el-col :span="9">-->
+            <!--              <el-cascader-->
+            <!--                v-model="form.city"-->
+            <!--                :options="cityOption"-->
+            <!--                :props="props"-->
+            <!--                style="width: 100%"-->
+            <!--              ></el-cascader>-->
+            <!--            </el-col>-->
+            <!--            <el-col :span="3">-->
+            <!--              <div style="text-align: right">详细地址</div>-->
+            <!--            </el-col>-->
+            <!--            <el-col :span="9">-->
+            <!--              <el-input v-model="form.addressDetail"></el-input>-->
+            <!--            </el-col>-->
+          </div>
+          <div v-else>
+            <el-input v-if="form.address" v-model="form.address" disabled></el-input>
+            <el-button type="primary" @click="addressVisible = true">选择地址</el-button>
+          </div>
         </el-form-item>
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
           <el-input v-model="form.email"></el-input>
@@ -42,32 +64,19 @@
         </el-form-item>
       </el-form>
 
-      <!--  添加客户属性  -->
-      <el-dialog width="36%" title="客户类型" :visible.sync="clientTypeVisible" append-to-body>
-        <div class="el-tag-content">
-          <el-tag
-            :key="tag.value"
-            v-for="tag in options"
-            closable
-            :disable-transitions="false"
-            @close="handleInputClose(tag.value)"
-          >
-            {{ tag.label }}
-          </el-tag>
-          <el-input
-            class="input-new-tag"
-            v-if="inputVisible"
-            v-model="inputValue"
-            ref="saveTagInput"
-            size="small"
-            @keyup.enter.native="handleInputConfirm"
-            @blur="handleInputConfirm"
-          >
-          </el-input>
-          <el-button v-else class="button-new-tag" size="small" @click="showInput">添加类型</el-button>
-        </div>
-      </el-dialog>
+      <client-add-type-model
+        :options="options"
+        :clientTypeVisible="clientTypeVisible"
+        @handleClose="handleTypeModelClose"
+        @changeType="changeType"
+      ></client-add-type-model>
 
+      <address-model
+        :id="id"
+        :addressVisible="addressVisible"
+        @handleAddressClose="handleAddressClose"
+        @AddressConfirm="AddressConfirm"
+      ></address-model>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
@@ -78,8 +87,15 @@
 
 <script>
 import client from '@/model/client' // api
+import ClientAddTypeModel from './clientAddTypeModel'
+import AddressModel from './addressModel'
+import pca from './pca-code.json'
 
 export default {
+  components: {
+    ClientAddTypeModel,
+    AddressModel,
+  },
   props: ['dialogFormVisible', 'id', 'row', 'status'],
   data() {
     return {
@@ -96,11 +112,16 @@ export default {
         addressIds: '',
       },
       options: [],
+      props: { label: 'name', value: 'name', expandTrigger: 'hover' },
       clientTypeVisible: false,
-      formLabelWidth: '100px',
-      inputVisible: false,
-      inputValue: '',
+      formLabelWidth: '80px',
+      addressVisible: false,
     }
+  },
+  computed: {
+    cityOption() {
+      return pca
+    },
   },
   async created() {
     await this.getClientTypeList()
@@ -139,17 +160,17 @@ export default {
      */
     async submit() {
       console.log(this.form) // 验证参数
+      const data = JSON.parse(JSON.stringify(this.form))
+      data.htje = data.htje ? this.form.htje : '0.00'
+      console.log(data)
       try {
         if (this.status === 'create') {
-          console.log('create')
-          const create = await client.createClient(this.form)
+          data.address = `${data.city.join(',')} ${data.addressDetail}` // 创建时合并地址发送 后端保存并添加地址列表
+          const create = await client.createClient(data)
           this.$message.success(create.message)
           this.handleClose()
         } else if (this.status === 'edit') {
-          console.log('edit')
-          console.log(this.id)
-          console.log(this.form)
-          const edit = await client.editClient(this.id, this.form)
+          const edit = await client.editClient(this.id, data)
           this.$message.success(edit.message)
           this.handleClose()
         }
@@ -168,49 +189,22 @@ export default {
     showClientType() {
       this.clientTypeVisible = true
     },
-
-    // 展示添加框
-    showInput() {
-      this.inputVisible = true
-      // eslint-disable-next-line no-unused-vars
-      this.$nextTick(() => {
-        this.$refs.saveTagInput.$refs.input.focus()
-      })
+    handleTypeModelClose() {
+      this.getClientTypeList()
+      this.clientTypeVisible = false
+    },
+    changeType(val) {
+      this.options = JSON.parse(JSON.stringify(val))
     },
 
-    // 添加客户类型
-    async handleInputConfirm() {
-      try {
-        const { inputValue } = this
-        // 提交数据
-        if (inputValue) {
-          const data = await client.createClientType({ name: inputValue })
-          this.getClientTypeList()
-          this.$message.success(data.message)
-          this.inputVisible = false
-          this.inputValue = ''
-        }
-      } catch (e) {
-        this.$message.error('添加失败')
-      }
+    // 关闭地址选择
+    handleAddressClose() {
+      this.addressVisible = false
     },
-
-    // 删除客户类型
-    handleInputClose(id) {
-      this.$confirm('此操作将永久删除该类型, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }).then(async () => {
-        const res = await client.deleteClientType(id)
-        if (res.code < window.MAX_SUCCESS_CODE) {
-          this.getClientTypeList()
-          this.$message({
-            type: 'success',
-            message: `${res.message}`,
-          })
-        }
-      })
+    // 确认地址
+    AddressConfirm(val) {
+      this.form.address = val
+      this.addressVisible = false
     },
   },
 }
@@ -220,20 +214,5 @@ export default {
 .client_type {
   display: flex;
   align-items: center;
-}
-
-.button-new-tag {
-  margin-left: 10px;
-  height: 32px;
-  line-height: 30px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-.input-new-tag {
-  width: 90px;
-  height: 32px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  vertical-align: bottom;
 }
 </style>
