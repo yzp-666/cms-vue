@@ -1,8 +1,14 @@
 /* eslint-disable class-methods-use-this */
 // _axios
-import { get, put, _delete } from '@/lin/plugin/axios'
+import { get, post, put, _delete } from '@/lin/plugin/axios'
 
 class Address {
+  // 创建客户地址
+  async createAddress(data) {
+    const res = await post('v1/address', data)
+    return res
+  }
+
   // 根据客户ID获取客户地址
   async getAddressListk(id) {
     const res = await get(`v1/address/${id}`)

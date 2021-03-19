@@ -125,6 +125,7 @@ export default {
   },
   async created() {
     await this.getClientTypeList()
+    await this.getDetails()
   },
   watch: {
     dialogFormVisible(val) {
@@ -203,7 +204,9 @@ export default {
     },
     // 确认地址
     AddressConfirm(val) {
-      this.form.address = val
+      if (val) {
+        this.form.address = val
+      }
       this.addressVisible = false
     },
   },

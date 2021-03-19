@@ -7,7 +7,7 @@
         <el-row :gutter="20">
           <el-col :span="16">
             <div class="el-row-left">
-              <el-button type="primary" @click="loadData">
+              <el-button type="primary" icon="el-icon-search" @click="loadData">
                 搜索
               </el-button>
             </div>
@@ -83,6 +83,7 @@ export default {
   },
   async created() {
     await this.loadData()
+    debugger
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
@@ -153,6 +154,7 @@ export default {
     // 关闭编辑
     editClose() {
       this.showEdit = false
+      console.log('编辑')
       this.loadData()
     },
   },
