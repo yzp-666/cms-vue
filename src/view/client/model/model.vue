@@ -29,29 +29,30 @@
           <el-input v-model="form.byPhone"></el-input>
         </el-form-item>
         <el-form-item label="地址" prop="address" :label-width="formLabelWidth">
-          <div v-if="status === 'create'">
-            <!--            <el-col :span="3" >-->
-            <!--              <div style="text-align: right">省/市/区</div>-->
-            <!--            </el-col>-->
-            <!--            <el-col :span="9">-->
-            <!--              <el-cascader-->
-            <!--                v-model="form.city"-->
-            <!--                :options="cityOption"-->
-            <!--                :props="props"-->
-            <!--                style="width: 100%"-->
-            <!--              ></el-cascader>-->
-            <!--            </el-col>-->
-            <!--            <el-col :span="3">-->
-            <!--              <div style="text-align: right">详细地址</div>-->
-            <!--            </el-col>-->
-            <!--            <el-col :span="9">-->
-            <!--              <el-input v-model="form.addressDetail"></el-input>-->
-            <!--            </el-col>-->
-          </div>
-          <div v-else>
-            <el-input v-if="form.address" v-model="form.address" disabled></el-input>
-            <el-button type="primary" @click="addressVisible = true">选择地址</el-button>
-          </div>
+          <el-input v-model="form.address"></el-input>
+          <!--          <div v-if="status === 'create'">-->
+          <!--            <el-col :span="3">-->
+          <!--              <div style="text-align: right">省/市/区</div>-->
+          <!--            </el-col>-->
+          <!--            <el-col :span="9">-->
+          <!--              <el-cascader-->
+          <!--                v-model="form.city"-->
+          <!--                :options="cityOption"-->
+          <!--                :props="props"-->
+          <!--                style="width: 100%"-->
+          <!--              ></el-cascader>-->
+          <!--            </el-col>-->
+          <!--            <el-col :span="3">-->
+          <!--              <div style="text-align: right">详细地址</div>-->
+          <!--            </el-col>-->
+          <!--            <el-col :span="9">-->
+          <!--              <el-input v-model="form.addressDetail"></el-input>-->
+          <!--            </el-col>-->
+          <!--          </div>-->
+          <!--          <div v-else>-->
+          <!--            <el-input v-if="form.address" v-model="form.address" disabled></el-input>-->
+          <!--            <el-button type="primary" @click="addressVisible = true">选择地址</el-button>-->
+          <!--          </div>-->
         </el-form-item>
         <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
           <el-input v-model="form.email"></el-input>
@@ -71,12 +72,6 @@
         @changeType="changeType"
       ></client-add-type-model>
 
-      <address-model
-        :id="id"
-        :addressVisible="addressVisible"
-        @handleAddressClose="handleAddressClose"
-        @AddressConfirm="AddressConfirm"
-      ></address-model>
       <div slot="footer" class="dialog-footer">
         <el-button @click="handleClose">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
@@ -88,13 +83,11 @@
 <script>
 import client from '@/model/client' // api
 import ClientAddTypeModel from './clientAddTypeModel'
-import AddressModel from './addressModel'
 import pca from './pca-code.json'
 
 export default {
   components: {
     ClientAddTypeModel,
-    AddressModel,
   },
   props: ['dialogFormVisible', 'id', 'row', 'status'],
   data() {
@@ -109,7 +102,7 @@ export default {
         byPhone: '',
         email: '',
         remark: '',
-        addressIds: '',
+        address: '',
       },
       options: [],
       props: { label: 'name', value: 'name', expandTrigger: 'hover' },
@@ -125,7 +118,7 @@ export default {
   },
   async created() {
     await this.getClientTypeList()
-    await this.getDetails()
+    // await this.getDetails()
   },
   watch: {
     dialogFormVisible(val) {
@@ -163,10 +156,8 @@ export default {
       console.log(this.form) // 验证参数
       const data = JSON.parse(JSON.stringify(this.form))
       data.htje = data.htje ? this.form.htje : '0.00'
-      console.log(data)
       try {
         if (this.status === 'create') {
-          data.address = `${data.city.join(',')} ${data.addressDetail}` // 创建时合并地址发送 后端保存并添加地址列表
           const create = await client.createClient(data)
           this.$message.success(create.message)
           this.handleClose()

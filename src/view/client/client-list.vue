@@ -154,7 +154,6 @@ export default {
     // 关闭编辑
     editClose() {
       this.showEdit = false
-      console.log('编辑')
       this.loadData()
     },
   },
