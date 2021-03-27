@@ -1,8 +1,26 @@
 <template>
   <div>
     <!-- 列表页面 -->
-    <div class="container" v-if="!showEdit">
-      <div class="header"><div class="title">图书列表</div></div>
+    <div class="container">
+      <div class="header"><div class="title">产品列表</div></div>
+      <div class="handle">
+        <el-row :gutter="20">
+          <el-col :span="16">
+            <div class="el-row-left">
+              <el-button type="primary" icon="el-icon-search" @click="loadData">
+                搜索
+              </el-button>
+            </div>
+          </el-col>
+          <el-col :span="8">
+            <div class="el-row-right">
+              <el-button type="primary" @click="handleAdd">
+                新增产品
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
       <!-- 表格 -->
       <lin-table
         :tableColumn="tableColumn"
@@ -10,23 +28,55 @@
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
-        @row-click="rowClick"
         v-loading="loading"
+        :pagination="pagination"
+        @handleSizeChange="handleSizeChange"
+        @currentChange="currentChange"
       ></lin-table>
     </div>
-
-    <!-- 编辑页面 -->
-    <book-modify v-else @editClose="editClose" :editBookID="editBookID"></book-modify>
+    <modal-form ref="modalForm" @ok="modalFormOk"></modal-form>
   </div>
 </template>
 
 <script>
+import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 import LinTable from '@/component/base/table/lin-table'
+import modalForm from './model/modalForm'
 
 export default {
-  computed: {
+  mixins: [JeecgListMixin],
+  components: {
     LinTable,
+    modalForm,
   },
+  data() {
+    return {
+      tableColumn: [
+        { prop: 'image', label: '图片' },
+        { prop: 'name', label: '产品名称' },
+        { prop: 'unit', label: '单位' },
+        { prop: 'price', label: '参考售价' },
+        { prop: 'remark', label: '备注' },
+      ],
+      operate: [],
+      url: {
+        list: '/v1/client',
+        delete: '/v1/client/delete',
+      },
+    }
+  },
+  created() {
+    this.operate = [
+      { name: '编辑', func: 'handleEdit', type: 'primary' },
+      {
+        name: '删除',
+        func: 'handleDelete',
+        type: 'danger',
+        permission: '删除产品',
+      },
+    ]
+  },
+  methods: {},
 }
 </script>
 

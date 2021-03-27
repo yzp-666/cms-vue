@@ -2,6 +2,7 @@ import adminConfig from './admin'
 import clientConfig from './client'
 import supplierConfig from './supplier'
 import pluginsConfig from './plugin'
+import protuctConfig from './product'
 import Utils from '@/lin/util/util'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -48,6 +49,7 @@ let homeRouter = [
   adminConfig,
   clientConfig,
   supplierConfig,
+  protuctConfig,
 ]
 
 const plugins = [...pluginsConfig]

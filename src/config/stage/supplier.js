@@ -16,6 +16,7 @@ const supplierRouter = {
       filePath: 'view/supplier/supplier-list.vue',
       inNav: true,
       icon: 'iconfont icon-tushuguanli',
+      permission: ['查询所有供应商'],
     },
   ],
 }
