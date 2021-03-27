@@ -1,9 +1,11 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
     <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
-      <el-form-item label="产品图片" prop="image" :label-width="formLabelWidth">
-        <!--        <el-input v-model="form.image"></el-input>-->
-        <upload-imgs ref="uploadEle" />
+      <el-form-item label="产品图片" prop="images" :label-width="formLabelWidth">
+        <upload-imgs ref="uploadEle" :value="form.images" />
+      </el-form-item>
+      <el-form-item label="产品编号" prop="name" :label-width="formLabelWidth">
+        <el-input v-model="form.code"></el-input>
       </el-form-item>
       <el-form-item label="产品名称" prop="name" :label-width="formLabelWidth">
         <el-input v-model="form.name"></el-input>
@@ -50,7 +52,7 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {
-        image: [],
+        images: [],
       },
       url: {
         add: '/v1/supplier', // post
