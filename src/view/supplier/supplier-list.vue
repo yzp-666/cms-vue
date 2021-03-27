@@ -2,7 +2,7 @@
   <div>
     <!-- 列表页面 -->
     <div class="container">
-      <div class="header"><div class="title">客户列表</div></div>
+      <div class="header"><div class="title">供应商列表</div></div>
       <div class="handle">
         <el-row :gutter="20">
           <el-col :span="16">
@@ -15,7 +15,7 @@
           <el-col :span="8">
             <div class="el-row-right">
               <el-button type="primary" @click="handleAdd">
-                新增客户
+                新增供应商
               </el-button>
             </div>
           </el-col>
@@ -48,12 +48,11 @@ export default {
   components: {
     LinTable,
     modalForm,
-    // CreatModel,
   },
   data() {
     return {
       tableColumn: [
-        { prop: 'name', label: '客户名称' },
+        { prop: 'name', label: '供应商名称' },
         { prop: 'phone', label: '电话' },
         { prop: 'htje', label: '合同金额' },
         { prop: 'ysh', label: '已送货' },
@@ -63,8 +62,8 @@ export default {
       ],
       operate: [],
       url: {
-        list: '/v1/client',
-        delete: '/v1/client/delete',
+        list: '/v1/supplier',
+        delete: '/v1/supplier/delete',
       },
     }
   },
@@ -75,7 +74,7 @@ export default {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        permission: '删除客户',
+        permission: '删除供应商',
       },
     ]
   },

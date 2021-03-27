@@ -5,7 +5,7 @@ const CustomRouter = {
   type: 'folder',
   icon: 'iconfont icon-zidingyi',
   filePath: 'view/custom/',
-  order: null,
+  order: 97,
   inNav: true,
   children: [
     {

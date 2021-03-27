@@ -1,29 +1,29 @@
 import _axios, { _delete } from '@/lin/plugin/axios'
 
-class Client {
+class Supplier {
   // 获取客户属性列表
-  async getClientTypeList() {
+  async getSupplierTypeList() {
     return _axios({
       method: 'get',
-      url: 'v1/client_type',
+      url: 'v1/supplier_type',
       handleError: true,
     })
   }
 
   // 创建客户属性
-  async createClientType(data) {
+  async createSupplierType(data) {
     return _axios({
       method: 'post',
-      url: 'v1/client_type',
+      url: 'v1/supplier_type',
       data,
     })
   }
 
   // 删除客户属性
-  async deleteClientType(id) {
-    const res = await _delete(`v1/client_type/delete/${id}`)
+  async deleteSupplierType(id) {
+    const res = await _delete(`v1/supplier_type/delete/${id}`)
     return res
   }
 }
 
-export default new Client()
+export default new Supplier()

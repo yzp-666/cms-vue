@@ -5,7 +5,7 @@ const linCmsUiRouter = {
   type: 'folder',
   icon: 'iconfont icon-jiemiansheji',
   filePath: 'view/lin-cms-ui/',
-  order: null,
+  order: 98,
   inNav: true,
   children: [
     {

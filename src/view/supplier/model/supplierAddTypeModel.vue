@@ -1,6 +1,12 @@
 <template>
   <!--  添加客户属性  -->
-  <el-dialog width="36%" title="客户类型" :visible.sync="clientTypeVisible" :before-close="handleClose" append-to-body>
+  <el-dialog
+    width="36%"
+    title="客户类型"
+    :visible.sync="supplierTypeVisible"
+    :before-close="handleClose"
+    append-to-body
+  >
     <div class="el-tag-content">
       <el-tag
         :key="tag.value"
@@ -27,10 +33,10 @@
 </template>
 
 <script>
-import client from '@/model/client' // api
+import supplier from '@/model/supplier' // api
 
 export default {
-  props: ['clientTypeVisible', 'options'],
+  props: ['supplierTypeVisible', 'options'],
   data() {
     return {
       inputVisible: false,
@@ -39,7 +45,7 @@ export default {
     }
   },
   watch: {
-    clientTypeVisible() {
+    supplierTypeVisible() {
       this.data = JSON.parse(JSON.stringify(this.options))
     },
   },
@@ -53,10 +59,10 @@ export default {
         const { inputValue } = this
         // 提交数据
         if (inputValue) {
-          const data = await client.createClientType({ name: inputValue })
+          const data = await supplier.createSupplierType({ name: inputValue })
           this.$message.success(data.message)
           this.data.push(data.data)
-          this.$emit('changeType', this.data)
+          this.$emit('changeType')
           this.inputVisible = false
           this.inputValue = ''
         }
@@ -71,7 +77,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await client.deleteClientType(id)
+        const res = await supplier.deleteSupplierType(id)
         if (res.code < window.MAX_SUCCESS_CODE) {
           console.log(index)
           this.data.splice(index, 1)
