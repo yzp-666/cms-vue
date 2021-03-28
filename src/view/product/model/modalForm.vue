@@ -1,9 +1,9 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
     <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
-      <el-form-item label="产品图片" prop="images" :label-width="formLabelWidth">
-        <upload-imgs ref="uploadEle" :value="form.images" />
-      </el-form-item>
+      <!--      <el-form-item label="产品图片" prop="images" :label-width="formLabelWidth">-->
+      <!--        <upload-imgs ref="uploadEle" :value="form.images" />-->
+      <!--      </el-form-item>-->
       <el-form-item label="产品编号" prop="name" :label-width="formLabelWidth">
         <el-input v-model="form.code"></el-input>
       </el-form-item>
@@ -11,13 +11,59 @@
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="计量单位" prop="unit" :label-width="formLabelWidth">
+        <el-select v-model="form.unit" placeholder="请选择单位">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="单价/元" prop="unit" :label-width="formLabelWidth">
         <el-input v-model="form.unit"></el-input>
       </el-form-item>
-      <el-form-item label="幅宽" prop="width" :label-width="formLabelWidth">
-        <el-input v-model="form.width"></el-input>
-      </el-form-item>
-      <el-form-item label="克重" prop="weight" :label-width="formLabelWidth">
-        <el-input v-model="form.weight"></el-input>
+      <el-form-item label="规格" :label-width="formLabelWidth">
+        <!--        :prop="'type.' + index + '.value'"-->
+        <br />
+        <el-row v-for="(type, index) in form.types" :key="type.id" style="margin-bottom: 5px">
+          <el-col :span="9">
+            <el-row>
+              <el-col :span="4">
+                <span class="_type">幅宽</span>
+              </el-col>
+              <el-col :span="16">
+                <el-input v-model="type.width"></el-input>
+              </el-col>
+              <el-col :span="4">
+                <span class="_type">cm</span>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="2"><span class="_type" style="font-size: 16px;color: red;">*</span></el-col>
+          <el-col :span="9">
+            <el-row>
+              <el-col :span="4">
+                <span class="_type">克重</span>
+              </el-col>
+              <el-col :span="16">
+                <el-input v-model="type.weight"></el-input>
+              </el-col>
+              <el-col :span="4">
+                <span class="_type">g/m2</span>
+              </el-col>
+            </el-row>
+          </el-col>
+          <el-col :span="4">
+            <div class="_icon">
+              <i class="el-icon-circle-plus-outline" title="添加" @click="addType"></i>
+              <i
+                v-show="form.types.length > 1"
+                class="el-icon-remove-outline _delete"
+                title="删除"
+                @click="deleteType(index)"
+              ></i>
+            </div>
+          </el-col>
+        </el-row>
+
+        <!--        <el-input v-model="type.value"></el-input>-->
+        <!--        <el-button @click.prevent="removeDomain(domain)">删除</el-button>-->
       </el-form-item>
       <el-form-item label="备注" prop="remark" :label-width="formLabelWidth">
         <el-input type="textarea" v-model="form.remark"></el-input>
@@ -33,11 +79,11 @@
 
 <script>
 import { put, post } from '@/lin/plugin/axios' // 请求方法
-import UploadImgs from '@/component/base/upload-image/index'
+// import UploadImgs from '@/component/base/upload-image/index'
 
 export default {
   components: {
-    UploadImgs,
+    // UploadImgs,
   },
   props: {
     width: {
@@ -53,11 +99,22 @@ export default {
       dialogFormVisible: false,
       form: {
         images: [],
+        types: [[null, null]],
       },
       url: {
         add: '/v1/supplier', // post
         edit: '/v1/supplier', // put '/:id'
       },
+      options: [
+        {
+          value: 1,
+          label: 'kg',
+        },
+        {
+          value: 2,
+          label: 'm',
+        },
+      ],
     }
   },
   methods: {
@@ -71,12 +128,37 @@ export default {
     add() {
       this.dialogFormVisible = true
       this.$nextTick(() => {
-        this.form = {}
+        this.form = {
+          images: [],
+          types: [
+            {
+              type_id: 0,
+              width: null,
+              weight: null,
+            },
+          ],
+        }
       })
     },
     close() {
       this.$emit('close')
       this.dialogFormVisible = false
+    },
+    addType() {
+      const { types } = this.form
+      types.push({
+        id: types[types.length - 1].id,
+        width: null,
+        weight: null,
+      })
+      this.$set(this.form, 'types', JSON.parse(JSON.stringify(types)))
+    },
+    deleteType(index) {
+      const { types } = this.form
+      if (this.form.types.length > 1) {
+        types.splice(index, 1)
+        this.$set(this.form, 'types', JSON.parse(JSON.stringify(types)))
+      }
     },
     /**
      * 验证参数

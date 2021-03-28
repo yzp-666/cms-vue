@@ -35,3 +35,24 @@
 .el-tag-content > .el-button {
   margin-bottom: 10px;
 }
+
+/* form表单样式 */
+._type{
+  display: inline-block;
+  width: 100%;
+  color: #333333;
+  text-align: center;
+}
+
+._icon{
+  font-size: 28px;
+  i{
+    margin:0 5px;
+    cursor: pointer;
+  }
+}
+
+._delete{
+  color: #f4516c;
+}
+/* end form表单样式 */
