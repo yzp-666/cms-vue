@@ -18,6 +18,16 @@ const clientRouter = {
       icon: 'iconfont icon-team',
       permission: ['查询所有产品'],
     },
+    {
+      title: '颜色设置',
+      type: 'view',
+      name: 'setColor',
+      route: '/product/set',
+      filePath: 'view/product/product-set.vue',
+      inNav: true,
+      icon: 'iconfont icon-team',
+      permission: ['设置产品颜色'],
+    },
   ],
 }
 

@@ -74,8 +74,8 @@ export default {
       options: [],
       clientTypeVisible: false,
       url: {
-        add: '/v1/supplier', // post
-        edit: '/v1/supplier', // put '/:id'
+        add: '/v1/client', // post
+        edit: '/v1/client', // put '/:id'
       },
     }
   },
@@ -118,11 +118,13 @@ export default {
           put(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         } else {
           post(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         }
       } catch (e) {
@@ -134,7 +136,6 @@ export default {
       this.clientTypeVisible = false
     },
     changeType(val) {
-      console.log(val)
       this.options = JSON.parse(JSON.stringify(val))
     },
     async getClientTypeList() {

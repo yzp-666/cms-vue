@@ -9,7 +9,7 @@
           <el-select v-model="form.typeId" placeholder="请选择">
             <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
           </el-select>
-          <l-icon :name="'plus-circle'" :color="'#3963bc'" style="margin-left: 10px" @click="showClientType"></l-icon>
+          <l-icon :name="'plus-circle'" :color="'#3963bc'" style="margin-left: 10px" @click="showType"></l-icon>
         </div>
       </el-form-item>
       <el-form-item label="期初欠款" prop="htje" :label-width="formLabelWidth">
@@ -37,7 +37,7 @@
 
     <supplier-add-type-model
       :options="options"
-      :clientTypeVisible="clientTypeVisible"
+      :supplierTypeVisible="clientTypeVisible"
       @handleClose="handleTypeModelClose"
       @changeType="changeType"
     ></supplier-add-type-model>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import client from '@/model/client' // api
+import supplier from '@/model/supplier' // api
 import { put, post } from '@/lin/plugin/axios'
 import supplierAddTypeModel from './supplierAddTypeModel'
 
@@ -80,7 +80,7 @@ export default {
     }
   },
   created() {
-    this.getClientTypeList()
+    this.getSupplierTypeList()
   },
   methods: {
     edit(record) {
@@ -118,11 +118,13 @@ export default {
           put(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         } else {
           post(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         }
       } catch (e) {
@@ -130,18 +132,17 @@ export default {
       }
     },
     handleTypeModelClose() {
-      this.getClientTypeList()
+      this.getSupplierTypeList()
       this.clientTypeVisible = false
     },
     changeType(val) {
-      console.log(val)
       this.options = JSON.parse(JSON.stringify(val))
     },
-    async getClientTypeList() {
-      const clientTypeList = await client.getClientTypeList()
-      this.options = clientTypeList
+    async getSupplierTypeList() {
+      const supplierTypeList = await supplier.getSupplierTypeList()
+      this.options = supplierTypeList
     },
-    showClientType() {
+    showType() {
       this.clientTypeVisible = true
     },
   },

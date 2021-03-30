@@ -73,9 +73,8 @@ export default {
       }).then(async () => {
         const res = await client.deleteClientType(id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          console.log(index)
           this.data.splice(index, 1)
-          this.$emit('changeType')
+          this.$emit('changeType', this.data)
           this.$message({
             type: 'success',
             message: `${res.message}`,

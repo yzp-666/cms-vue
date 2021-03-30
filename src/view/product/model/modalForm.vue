@@ -15,10 +15,10 @@
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="单价/元" prop="unit" :label-width="formLabelWidth">
-        <el-input v-model="form.unit"></el-input>
+      <el-form-item label="杂色单价(元)" prop="price" :label-width="formLabelWidth">
+        <el-input v-model="form.price"></el-input>
       </el-form-item>
-      <el-form-item label="规格" :label-width="formLabelWidth">
+      <el-form-item label="规格" prop="type" required :label-width="formLabelWidth">
         <!--        :prop="'type.' + index + '.value'"-->
         <br />
         <el-row v-for="(type, index) in form.types" :key="type.id" style="margin-bottom: 5px">
@@ -28,7 +28,9 @@
                 <span class="_type">幅宽</span>
               </el-col>
               <el-col :span="16">
-                <el-input v-model="type.width"></el-input>
+                <el-form-item prop="width">
+                  <el-input v-model="type.width"></el-input>
+                </el-form-item>
               </el-col>
               <el-col :span="4">
                 <span class="_type">cm</span>
@@ -42,7 +44,9 @@
                 <span class="_type">克重</span>
               </el-col>
               <el-col :span="16">
-                <el-input v-model="type.weight"></el-input>
+                <el-form-item prop="weight">
+                  <el-input v-model="type.weight"></el-input>
+                </el-form-item>
               </el-col>
               <el-col :span="4">
                 <span class="_type">g/m2</span>
@@ -98,12 +102,13 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {
-        images: [],
+        // images: [],
         types: [[null, null]],
+        unit: 1,
       },
       url: {
-        add: '/v1/supplier', // post
-        edit: '/v1/supplier', // put '/:id'
+        add: '/v1/product', // post
+        edit: '/v1/product', // put '/:id'
       },
       options: [
         {
@@ -122,6 +127,9 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs.form.resetFields()
+        if (record.row.types) {
+          record.row.types = JSON.parse(record.row.types)
+        }
         this.form = Object.assign({}, record.row)
       })
     },
@@ -129,7 +137,7 @@ export default {
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.form = {
-          images: [],
+          // images: [],
           types: [
             {
               type_id: 0,
@@ -137,6 +145,7 @@ export default {
               weight: null,
             },
           ],
+          unit: 1,
         }
       })
     },
@@ -153,6 +162,7 @@ export default {
       })
       this.$set(this.form, 'types', JSON.parse(JSON.stringify(types)))
     },
+
     deleteType(index) {
       const { types } = this.form
       if (this.form.types.length > 1) {
@@ -160,6 +170,7 @@ export default {
         this.$set(this.form, 'types', JSON.parse(JSON.stringify(types)))
       }
     },
+
     /**
      * 验证参数
      * 提交
@@ -167,7 +178,6 @@ export default {
      */
     async handleOk() {
       // TODO 验证参数
-      console.log(this.form)
       const that = this
       const data = JSON.parse(JSON.stringify(this.form))
       data.htje = data.htje ? this.form.htje : '0.00'
@@ -178,11 +188,13 @@ export default {
           put(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         } else {
           post(url, data).then(res => {
             that.$message.success(res.message)
             that.$emit('ok')
+            that.close()
           })
         }
       } catch (e) {

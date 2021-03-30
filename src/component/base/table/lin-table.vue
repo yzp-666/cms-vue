@@ -19,20 +19,23 @@
     >
       <el-table-column v-if="type" :type="type" width="55"></el-table-column>
       <el-table-column v-if="index" :type="index" :index="currentIndex" width="55"></el-table-column>
-      <el-table-column
-        v-for="item in filterTableColumn"
-        :key="item.id"
-        :prop="item.prop"
-        :label="item.label"
-        :show-overflow-tooltip="true"
-        :filters="item.filters ? item.filters : null"
-        :filter-method="item.filterMethod ? item.filterMethod : null"
-        :column-key="item.filterMethod ? item.prop : null"
-        :formatter="item.formatter ? item.formatter : null"
-        :sortable="item.sortable ? item.sortable : false"
-        :fixed="item.fixed ? item.fixed : false"
-        :width="item.width ? item.width : ''"
-      ></el-table-column>
+      <template v-for="item in filterTableColumn">
+        <slot v-if="item.slot" :name="item.slot"></slot>
+        <el-table-column
+          v-else
+          :key="item.id"
+          :prop="item.prop"
+          :label="item.label"
+          :show-overflow-tooltip="true"
+          :filters="item.filters ? item.filters : null"
+          :filter-method="item.filterMethod ? item.filterMethod : null"
+          :column-key="item.filterMethod ? item.prop : null"
+          :formatter="item.formatter ? item.formatter : null"
+          :sortable="item.sortable ? item.sortable : false"
+          :fixed="item.fixed ? item.fixed : false"
+          :width="item.width ? item.width : ''"
+        ></el-table-column>
+      </template>
       <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="275">
         <template slot-scope="scope">
           <el-button

@@ -62,7 +62,7 @@ export default {
           const data = await supplier.createSupplierType({ name: inputValue })
           this.$message.success(data.message)
           this.data.push(data.data)
-          this.$emit('changeType')
+          this.$emit('changeType', this.data)
           this.inputVisible = false
           this.inputValue = ''
         }
@@ -79,9 +79,8 @@ export default {
       }).then(async () => {
         const res = await supplier.deleteSupplierType(id)
         if (res.code < window.MAX_SUCCESS_CODE) {
-          console.log(index)
           this.data.splice(index, 1)
-          this.$emit('changeType')
+          this.$emit('changeType', this.data)
           this.$message({
             type: 'success',
             message: `${res.message}`,

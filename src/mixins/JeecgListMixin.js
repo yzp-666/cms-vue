@@ -83,7 +83,7 @@ export const JeecgListMixin = {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await _delete(this.url.delete, val.row.id)
+        const res = await _delete(`${this.url.delete}/${val.row.id}`)
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.loadData()
           this.$message({
