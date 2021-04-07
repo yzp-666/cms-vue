@@ -28,6 +28,7 @@
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
+        @goToGroupEditPage="goToGroupEditPage"
         v-loading="loading"
         :pagination="pagination"
         @handleSizeChange="handleSizeChange"
@@ -73,7 +74,7 @@ export default {
   },
   created() {
     this.operate = [
-      { name: '颜色', func: 'handleSet', type: 'primary' },
+      { name: '颜色', func: 'goToGroupEditPage', type: 'primary' },
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
         name: '删除',
@@ -84,8 +85,14 @@ export default {
     ]
   },
   methods: {
-    handleSet() {
-      // 跳转颜色
+    goToGroupEditPage(record) {
+      console.log(record)
+      this.$router.push({
+        path: '/product/set',
+        query: {
+          id: record.row.id,
+        },
+      })
     },
   },
 }

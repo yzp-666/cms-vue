@@ -9,6 +9,13 @@ class Product {
       handleError: true,
     })
   }
+
+  async getDetails(id) {
+    return _axios({
+      method: 'get',
+      url: `v1/product/${id}`,
+    })
+  }
 }
 
 export default new Product()

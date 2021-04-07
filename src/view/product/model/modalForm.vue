@@ -5,7 +5,7 @@
       <!--        <upload-imgs ref="uploadEle" :value="form.images" />-->
       <!--      </el-form-item>-->
       <el-form-item label="产品编号" prop="name" :label-width="formLabelWidth">
-        <el-input v-model="form.code"></el-input>
+        <el-input v-model="form.code" @change="codeChange"></el-input>
       </el-form-item>
       <el-form-item label="产品名称" prop="name" :label-width="formLabelWidth">
         <el-input v-model="form.name"></el-input>
@@ -124,13 +124,14 @@ export default {
   },
   methods: {
     edit(record) {
+      const data = JSON.parse(JSON.stringify(record))
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-        if (record.row.types) {
-          record.row.types = JSON.parse(record.row.types)
+        if (data.row.types) {
+          data.row.types = JSON.parse(data.row.types)
         }
-        this.form = Object.assign({}, record.row)
+        this.form = Object.assign({}, data.row)
       })
     },
     add() {
@@ -200,6 +201,9 @@ export default {
       } catch (e) {
         this.$message.error('客户添加失败，请检测填写信息')
       }
+    },
+    codeChange(val) {
+      this.form.code = val.toUpperCase()
     },
   },
 }

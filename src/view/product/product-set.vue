@@ -76,12 +76,32 @@ export default {
   },
   async created() {
     await this.loadAll()
+    const { id } = this.$route.query
+    if (id) {
+      await this.getDetails(id)
+    }
   },
   methods: {
+    // 获取产品列表
     async loadAll() {
-      // 获取产品列表
       this.restaurants = await product.getAllList()
     },
+    // 获取产品详情
+    async getDetails(id) {
+      const data = await product.getDetails(id)
+      this.$nextTick(() => {
+        this.$refs.ruleForm.resetFields()
+        this.ruleForm = Object.assign({}, data)
+      })
+    },
+    // TODO获取产品颜色列表
+    // async getDetails(id) {
+    //   const data = await product.getDetails(id)
+    //   this.$nextTick(() => {
+    //     this.$refs.ruleForm.resetFields()
+    //     this.ruleForm = Object.assign({}, data)
+    //   })
+    // },
     querySearch(queryString, cb) {
       const { restaurants } = this
       // 亲求数据
