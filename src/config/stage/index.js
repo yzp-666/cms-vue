@@ -1,20 +1,21 @@
 import adminConfig from './admin'
 import bookConfig from './book' // 引入图书管理路由文件
-import pluginsConfig from './plugin'
+import pluginsConfig from './plugin' // 引入 lin-cms-ui文件
 import Utils from '@/lin/util/util'
 
+// const pluginsConfig = [] // 不需要ui文件取消注释
 // eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
-  {
-    title: '林间有风',
-    type: 'view',
-    name: Symbol('about'),
-    route: '/about',
-    filePath: 'view/about/about.vue',
-    inNav: true,
-    icon: 'iconfont icon-iconset0103',
-    order: 1,
-  },
+  // {
+  //   title: '林间有风',
+  //   type: 'view',
+  //   name: Symbol('about'),
+  //   route: '/about',
+  //   filePath: 'view/about/about.vue',
+  //   inNav: true,
+  //   icon: 'iconfont icon-iconset0103',
+  //   order: 1,
+  // },
   {
     title: '日志管理',
     type: 'view',
