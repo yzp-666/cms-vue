@@ -19,20 +19,23 @@
     >
       <el-table-column v-if="type" :type="type" width="55"></el-table-column>
       <el-table-column v-if="index" :type="index" :index="currentIndex" width="55"></el-table-column>
-      <el-table-column
-        v-for="item in filterTableColumn"
-        :key="item.id"
-        :prop="item.prop"
-        :label="item.label"
-        :show-overflow-tooltip="true"
-        :filters="item.filters ? item.filters : null"
-        :filter-method="item.filterMethod ? item.filterMethod : null"
-        :column-key="item.filterMethod ? item.prop : null"
-        :formatter="item.formatter ? item.formatter : null"
-        :sortable="item.sortable ? item.sortable : false"
-        :fixed="item.fixed ? item.fixed : false"
-        :width="item.width ? item.width : ''"
-      ></el-table-column>
+      <template v-for="item in filterTableColumn">
+        <slot v-if="item.slot" :name="item.slot"></slot>
+        <el-table-column
+          v-else
+          :key="item.id"
+          :prop="item.prop"
+          :label="item.label"
+          :show-overflow-tooltip="true"
+          :filters="item.filters ? item.filters : null"
+          :filter-method="item.filterMethod ? item.filterMethod : null"
+          :column-key="item.filterMethod ? item.prop : null"
+          :formatter="item.formatter ? item.formatter : null"
+          :sortable="item.sortable ? item.sortable : false"
+          :fixed="item.fixed ? item.fixed : false"
+          :width="item.width ? item.width : ''"
+        ></el-table-column>
+      </template>
       <el-table-column v-if="operate.length > 0" label="操作" fixed="right" width="275">
         <template slot-scope="scope">
           <el-button
@@ -52,7 +55,9 @@
       class="pagination"
       v-if="pagination"
       background
-      layout="prev, pager, next"
+      layout="sizes, prev, pager, next"
+      @size-change="handleSizeChange"
+      :page-sizes="pagination.pageSizes ? pagination.pageSizes : [10, 20, 50, 100]"
       :page-size="pagination.pageSize ? pagination.pageSize : 10"
       :total="pagination.pageTotal ? pagination.pageTotal : null"
       :current-page="pagination.currentPage ? pagination.currentPage : 1"
@@ -135,7 +140,6 @@ export default {
     pagination: {
       // 分页
       type: [Object, Boolean],
-      default: false,
     },
     border: {
       // 边框
@@ -167,6 +171,10 @@ export default {
       const _this = this
       const { methods } = this.$options
       methods[func](_this, index, row)
+    },
+    // 切换每页条数钩子
+    handleSizeChange(val) {
+      this.$emit('handleSizeChange', val)
     },
     // 行内编辑
     handleEdit(_this, index, row) {
@@ -214,10 +222,7 @@ export default {
         this.oldKey = this.oldKey.filter(item => item !== row.key)
         const data = this.oldVal.filter(item => item.key !== row.key)
         this.handleSelectionChange(data)
-        this.toggleSelection(
-          this.currentData.filter(item => item.key === row.key),
-          false,
-        )
+        this.toggleSelection(this.currentData.filter(item => item.key === row.key), false)
       }
       // 选中-单选
       if (this.currentOldRow && this.currentOldRow.key === row.key) {
@@ -234,10 +239,10 @@ export default {
       this.oldVal = []
       this.currentPage = page
       this.selectedTableData = JSON.parse(sessionStorage.getItem('selectedTableData'))
-      this.currentData = this.tableData.filter(
-        (item, index) => index >= (this.currentPage - 1) * this.pagination.pageSize
-          && index < this.currentPage * this.pagination.pageSize,
-      ) // eslint-disable-line
+      // this.currentData = this.tableData.filter(
+      //   (item, index) => index >= (this.currentPage - 1) * this.pagination.pageSize
+      //     && index < this.currentPage * this.pagination.pageSize,
+      // ) // eslint-disable-line
       this.$emit('currentChange', page)
       // 已选中的数据打勾
       this.selectedTableData.forEach(item => {
