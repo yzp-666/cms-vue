@@ -1,32 +1,23 @@
-const bookRouter = {
+const demoRouter = {
   route: null,
   name: null,
-  title: '',
+  title: 'demo',
   type: 'folder', // 类型: folder, tab, view
   icon: 'iconfont icon-tushuguanli',
-  filePath: 'view/book/', // 文件路径
-  order: 2,
+  filePath: 'view/demo/', // 文件路径
+  order: 3,
   inNav: true,
   children: [
     {
-      title: '添加图书',
+      title: 'demo列表',
       type: 'view',
-      name: 'BookCreate',
-      route: '/book/add',
-      filePath: 'view/book/book-create.vue',
-      inNav: true,
-      icon: 'iconfont icon-tushuguanli',
-    },
-    {
-      title: '图书列表',
-      type: 'view',
-      name: 'BookCreate',
-      route: '/book/list',
-      filePath: 'view/book/book-list.vue',
+      name: 'Demo',
+      route: '/demo/list',
+      filePath: 'view/demo/demo-list.vue',
       inNav: true,
       icon: 'iconfont icon-tushuguanli',
     },
   ],
 }
 
-export default bookRouter
+export default demoRouter
