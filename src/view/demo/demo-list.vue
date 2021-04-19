@@ -33,11 +33,13 @@ export default {
       operate: [],
       showEdit: false,
       editBookID: 1,
+      url: {
+        list: '/v1/demo',
+      },
     }
   },
   async created() {
     this.loading = true
-    await this.getBooks()
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       {
@@ -49,6 +51,7 @@ export default {
     ]
     this.loading = false
   },
+  methods: {},
 }
 </script>
 
