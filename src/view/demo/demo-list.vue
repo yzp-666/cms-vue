@@ -3,6 +3,12 @@
     <!-- 列表页面 -->
     <div class="container">
       <div class="header"><div class="title">demo列表</div></div>
+      <!-- 顶部按钮-->
+      <div class="header-handle">
+        <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
+
+        <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
+      </div>
       <!-- 表格 -->
       <lin-table
         :tableColumn="tableColumn"
@@ -10,38 +16,53 @@
         :operate="operate"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
-        @row-click="rowClick"
+        @goToGroupEditPage="goToGroupEditPage"
         v-loading="loading"
-      ></lin-table>
+        :pagination="pagination"
+        @handleSizeChange="handleSizeChange"
+        @currentChange="currentChange"
+      >
+        <template v-slot:sex>
+          <el-table-column label="性别" width="150" v-slot="{ row }">
+            {{row.sex == 1 ? '男': row.sex == 0 ? '女' : '不详'}}
+          </el-table-column>
+        </template>
+      </lin-table>
     </div>
+
+    <model-form ref="modalForm" @ok="modalFormOk"></model-form>
   </div>
 </template>
 
 <script>
 import LinTable from '@/component/base/table/lin-table'
+import ModelForm from './model/model-form'
 import { JeecgListMixin } from '@/mixins/JeecgListMixin'
 
 export default {
   components: {
     LinTable,
+    ModelForm,
   },
   mixins: [JeecgListMixin],
   data() {
     return {
-      tableColumn: [{ prop: 'title', label: '书名' }, { prop: 'author', label: '作者' }],
-      tableData: [],
+      tableColumn: [
+        { prop: 'name', label: '名字' },
+        { prop: 'phone', label: '电话' },
+        { prop: 'sex', slot: 'sex' },
+      ],
       operate: [],
-      showEdit: false,
-      editBookID: 1,
       url: {
         list: '/v1/demo',
       },
     }
   },
-  async created() {
+  async mounted() {
     this.loading = true
     this.operate = [
       { name: '编辑', func: 'handleEdit', type: 'primary' },
+      { name: '跳转', func: 'goToGroupEditPage', type: 'primary' },
       {
         name: '删除',
         func: 'handleDelete',
@@ -51,7 +72,11 @@ export default {
     ]
     this.loading = false
   },
-  methods: {},
+  methods: {
+    goToGroupEditPage(row, index) {
+      console.log(row, index)
+    }
+  },
 }
 </script>
 
