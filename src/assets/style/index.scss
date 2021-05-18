@@ -21,3 +21,8 @@
     padding: 20px;
   }
 }
+
+// table 表头对齐样式
+.el-table th.gutter{
+  display: table-cell!important;
+}

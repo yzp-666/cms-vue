@@ -93,6 +93,23 @@ export const JeecgListMixin = {
         }
       })
     },
+    handleDeleteArr() {
+      this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }).then(async () => {
+        // TODO 批量删除方法
+        // const res = await _delete(`${this.url.delete}/${val.row.id}`)
+        // if (res.code < window.MAX_SUCCESS_CODE) {
+        //   this.loadData()
+        //   this.$message({
+        //     type: 'success',
+        //     message: `${res.message}`,
+        //   })
+        // }
+      })
+    },
     getQueryParams() {
       // 获取查询条件
       const sqp = {}
