@@ -4,8 +4,10 @@
       ref="linTable"
       v-loading="loading"
       stripe
-      row-key="id"
+      row-key="key"
       :border="border"
+      :cell-style="cellStyle"
+      :header-cell-style="headerCellStyle"
       :data="currentData"
       :highlight-current-row="highlightCurrentRow ? true : false"
       :element-loading-text="loadingText"
@@ -18,7 +20,7 @@
       @row-click="rowClick"
     >
       <el-table-column v-if="type" :type="type" width="55"></el-table-column>
-      <el-table-column v-if="index" :type="index" :index="currentIndex" width="55"></el-table-column>
+      <el-table-column v-if="index" type="index" :index="currentIndex" :label="'序号'" width="55"></el-table-column>
       <template v-for="item in filterTableColumn">
         <slot v-if="item.slot" :name="item.slot"></slot>
         <el-table-column
@@ -111,6 +113,14 @@ export default {
       // 是否显示索引
       index: String,
       default: '',
+    },
+    cellStyle: {
+      // 单元格样式
+      type: Object,
+    },
+    headerCellStyle: {
+      // 表头单元格样式
+      type: Object,
     },
     highlightCurrentRow: {
       // 是否开启表格单选

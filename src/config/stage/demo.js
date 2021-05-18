@@ -7,6 +7,7 @@ const demoRouter = {
   filePath: 'view/demo/', // 文件路径
   order: 3,
   inNav: true,
+  permission: ['查询demo列表'],
   children: [
     {
       title: 'demo列表',

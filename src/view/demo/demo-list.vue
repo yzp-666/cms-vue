@@ -14,6 +14,11 @@
         :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
+        :border="true"
+        :index="1"
+        :type="'selection'"
+        :cellStyle="cellStyle"
+        :headerCellStyle="headerCellStyle"
         @handleEdit="handleEdit"
         @handleDelete="handleDelete"
         @goToGroupEditPage="goToGroupEditPage"
@@ -22,9 +27,10 @@
         @handleSizeChange="handleSizeChange"
         @currentChange="currentChange"
       >
+        <!--        :highlightCurrentRow="true"-->
         <template v-slot:sex>
           <el-table-column label="性别" width="150" v-slot="{ row }">
-            {{row.sex == 1 ? '男': row.sex == 0 ? '女' : '不详'}}
+            {{ row.sex == 1 ? '男' : row.sex == 0 ? '女' : '不详' }}
           </el-table-column>
         </template>
       </lin-table>
@@ -47,11 +53,9 @@ export default {
   mixins: [JeecgListMixin],
   data() {
     return {
-      tableColumn: [
-        { prop: 'name', label: '名字' },
-        { prop: 'phone', label: '电话' },
-        { prop: 'sex', slot: 'sex' },
-      ],
+      cellStyle: { 'text-align': 'center' },
+      headerCellStyle: { 'text-align': 'center' },
+      tableColumn: [{ prop: 'name', label: '名字' }, { prop: 'phone', label: '电话' }, { prop: 'sex', slot: 'sex' }],
       operate: [],
       url: {
         list: '/v1/demo',
@@ -75,7 +79,7 @@ export default {
   methods: {
     goToGroupEditPage(row, index) {
       console.log(row, index)
-    }
+    },
   },
 }
 </script>
@@ -102,6 +106,10 @@ export default {
     display: flex;
     justify-content: flex-end;
     margin: 20px;
+  }
+
+  .header-handle {
+    margin-bottom: 20px;
   }
 }
 </style>
