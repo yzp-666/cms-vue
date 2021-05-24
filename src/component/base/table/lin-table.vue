@@ -186,6 +186,9 @@ export default {
     handleSizeChange(val) {
       this.$emit('handleSizeChange', val)
     },
+    handleSee(_this, index, row) {
+      _this.$emit('handleSee', { index, row })
+    },
     // 行内编辑
     handleEdit(_this, index, row) {
       _this.$emit('handleEdit', { index, row })

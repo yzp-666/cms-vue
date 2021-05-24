@@ -1,8 +1,7 @@
-import { get, _delete } from '@/lin/plugin/axios' // 请求方法
+import { get, post } from '@/lin/plugin/axios' // 请求方法
 import { filterObj } from '@/utils/util'
 
-// eslint-disable-next-line import/prefer-default-export
-export const JeecgListMixin = {
+export default {
   data() {
     return {
       /* 查询条件-请不要在queryParam中声明非字符串值的属性 */
@@ -71,10 +70,10 @@ export const JeecgListMixin = {
       this.$refs.modalForm.title = '新增'
       this.$refs.modalForm.disableSubmit = false
     },
-    // 查看
-    handleLook(record) {
+    // 详情
+    handleSee(record) {
       this.$refs.modalForm.edit(record)
-      this.$refs.modalForm.title = '查看'
+      this.$refs.modalForm.title = '详情'
       this.$refs.modalForm.disableSubmit = true
     },
     handleDelete(val) {
@@ -83,7 +82,7 @@ export const JeecgListMixin = {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await _delete(`${this.url.delete}/${val.row.id}`)
+        const res = await post(`${this.url.delete}`, { id: val.row.id, ids: [val.row.id] })
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.loadData()
           this.$message({
@@ -93,21 +92,40 @@ export const JeecgListMixin = {
         }
       })
     },
+    // 批量操作
+    handleCommand(command) {
+      switch (command) {
+        case 'delete':
+          this.handleDeleteArr()
+          break
+        case 'export':
+          // this.handleDeleteArr()
+          console.log('导出')
+          break
+        default:
+          console.log('没操作')
+          break
+      }
+    },
     handleDeleteArr() {
       this.$confirm('此操作将永久删除, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        // TODO 批量删除方法
-        // const res = await _delete(`${this.url.delete}/${val.row.id}`)
-        // if (res.code < window.MAX_SUCCESS_CODE) {
-        //   this.loadData()
-        //   this.$message({
-        //     type: 'success',
-        //     message: `${res.message}`,
-        //   })
-        // }
+        const ids = []
+        this.$refs.table.selectedTableData.map(item => {
+          ids.push(item.id)
+          return null
+        })
+        const res = await post(`${this.url.delete}`, { id: 0, ids })
+        if (res.code < window.MAX_SUCCESS_CODE) {
+          this.loadData()
+          this.$message({
+            type: 'success',
+            message: `${res.message}`,
+          })
+        }
       })
     },
     getQueryParams() {

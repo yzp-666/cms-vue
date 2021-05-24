@@ -8,18 +8,19 @@
         <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
 
         <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
-        <el-dropdown style="margin-left: 10px">
+        <el-dropdown @command="handleCommand" style="margin-left: 10px">
           <el-button icon="el-icon-arrow-down">
             批量操作
           </el-button>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click="handleDeleteArr">批量删除</el-dropdown-item>
-<!--            <el-dropdown-item>导出</el-dropdown-item>-->
+            <el-dropdown-item command="delete">批量删除</el-dropdown-item>
+            <!--            <el-dropdown-item command="export" >导出</el-dropdown-item>-->
           </el-dropdown-menu>
         </el-dropdown>
       </div>
       <!-- 表格 -->
       <lin-table
+        ref="table"
         :tableColumn="tableColumn"
         :tableData="tableData"
         :operate="operate"
@@ -29,6 +30,7 @@
         :cellStyle="cellStyle"
         :headerCellStyle="headerCellStyle"
         @handleEdit="handleEdit"
+        @handleSee="handleSee"
         @handleDelete="handleDelete"
         @goToGroupEditPage="goToGroupEditPage"
         v-loading="loading"
@@ -52,7 +54,7 @@
 <script>
 import LinTable from '@/component/base/table/lin-table'
 import ModelForm from './model/model-form'
-import { JeecgListMixin } from '@/mixins/JeecgListMixin'
+import JeecgListMixin from '@/mixins/JeecgListMixin'
 import { get } from '@/lin/plugin/axios'
 
 export default {
@@ -69,12 +71,14 @@ export default {
       operate: [],
       url: {
         list: '/v1/demo',
+        delete: '/v1/demo/delete',
       },
     }
   },
   async mounted() {
     this.loading = true
     this.operate = [
+      { name: '查看', func: 'handleSee', type: 'primary' },
       { name: '编辑', func: 'handleEdit', type: 'primary' },
       { name: '跳转', func: 'goToGroupEditPage', type: 'primary' },
       {

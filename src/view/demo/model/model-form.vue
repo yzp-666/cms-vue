@@ -2,20 +2,20 @@
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
     <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
       <el-form-item label="名字" prop="name" :label-width="formLabelWidth">
-        <el-input v-model="form.name"></el-input>
+        <el-input :disabled="disableSubmit" v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-        <el-input v-model="form.phone"></el-input>
+        <el-input :disabled="disableSubmit" v-model="form.phone"></el-input>
       </el-form-item>
       <el-form-item label="性别" prop="sex" :label-width="formLabelWidth">
-        <el-radio-group v-model="form.sex">
+        <el-radio-group :disabled="disableSubmit" v-model="form.sex">
           <el-radio :label="1">男</el-radio>
           <el-radio :label="0">女</el-radio>
           <el-radio :label="2">不详</el-radio>
         </el-radio-group>
-<!--        <el-select v-model="form.unit" placeholder="">-->
-<!--          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>-->
-<!--        </el-select>-->
+        <!--        <el-select v-model="form.unit" placeholder="">-->
+        <!--          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>-->
+        <!--        </el-select>-->
       </el-form-item>
     </el-form>
 
@@ -102,7 +102,7 @@ export default {
       } catch (e) {
         this.$message.error('添加失败，请检测填写信息')
       }
-    }
+    },
   },
 }
 </script>
