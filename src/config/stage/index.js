@@ -1,6 +1,9 @@
 import adminConfig from './admin'
-import bookConfig from './book' // 引入图书管理路由文件
+// import bookConfig from './book' // 引入图书管理路由文件
 import demoRouter from './demo'
+import kehuRouter from './kehu'
+import gysRouter from './gys'
+import chanpinRouter from './chanpin'
 import pluginsConfig from './plugin' // 引入 lin-cms-ui文件
 import Utils from '@/lin/util/util'
 
@@ -36,8 +39,11 @@ let homeRouter = [
     inNav: false,
     icon: 'iconfont icon-rizhiguanli',
   },
-  bookConfig,
+  // bookConfig,
   demoRouter,
+  kehuRouter,
+  gysRouter,
+  chanpinRouter,
   adminConfig,
 ]
 
