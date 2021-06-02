@@ -3,11 +3,19 @@ import adminConfig from './admin'
 import demoRouter from './demo'
 import kehuRouter from './kehu'
 import gysRouter from './gys'
+import sellRouter from './sell'
 import chanpinRouter from './chanpin'
+import buyTicketRouter from './buy'
+import tuihuoRouter from './tuihuo'
+import makeRouter from './make'
+import kucunRouter from './kucun'
+import costRouter from './cost'
 import pluginsConfig from './plugin' // 引入 lin-cms-ui文件
 import Utils from '@/lin/util/util'
+import chartRouter from './chart'
 
 // const pluginsConfig = [] // 不需要ui文件取消注释
+
 // eslint-disable-next-line import/no-mutable-exports
 let homeRouter = [
   {
@@ -43,7 +51,14 @@ let homeRouter = [
   demoRouter,
   kehuRouter,
   gysRouter,
+  sellRouter,
   chanpinRouter,
+  buyTicketRouter,
+  tuihuoRouter,
+  makeRouter,
+  kucunRouter,
+  costRouter,
+  chartRouter,
   adminConfig,
 ]
 

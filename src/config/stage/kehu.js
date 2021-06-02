@@ -7,7 +7,7 @@ const kehuRouter = {
   filePath: 'view/kehu/', // 文件路径
   order: 4,
   inNav: true,
-  // permission: ['查询客户列表'],
+  permission: ['查询客户列表'],
   children: [
     {
       title: '客户列表',
