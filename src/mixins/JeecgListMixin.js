@@ -1,4 +1,4 @@
-import { get, post } from '@/lin/plugin/axios' // 请求方法
+import { get, post, _delete } from '@/lin/plugin/axios' // 请求方法
 import { filterObj } from '@/utils/util'
 
 export default {
@@ -82,7 +82,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning',
       }).then(async () => {
-        const res = await post(`${this.url.delete}`, { id: val.row.id, ids: [val.row.id] })
+        const res = await _delete(`${this.url.delete}`, {}, { ids: [val.row.id] })
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.loadData()
           this.$message({

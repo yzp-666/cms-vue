@@ -263,11 +263,13 @@ export function put(url, data = {}, params = {}) {
  * @param {string} url
  * @param {object} params
  */
-export function _delete(url, params = {}) {
+export function _delete(url, params = {}, data = {}) {
+  console.log(url, params)
   return _axios({
     method: 'delete',
     url,
     params,
+    data,
   })
 }
 
