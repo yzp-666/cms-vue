@@ -1,4 +1,4 @@
-import { get, post, _delete } from '@/lin/plugin/axios' // 请求方法
+import { get, _delete } from '@/lin/plugin/axios' // 请求方法
 import { filterObj } from '@/utils/util'
 
 export default {
@@ -118,7 +118,7 @@ export default {
           ids.push(item.id)
           return null
         })
-        const res = await post(`${this.url.delete}`, { id: 0, ids })
+        const res = await _delete(`${this.url.delete}`, {}, { ids })
         if (res.code < window.MAX_SUCCESS_CODE) {
           this.loadData()
           this.$message({
