@@ -39,9 +39,9 @@
         @currentChange="currentChange"
       >
         <!--    :highlightCurrentRow="true"    -->
-        <template v-slot:sex>
-          <el-table-column label="性别" width="150" v-slot="{ row }">
-            {{ row.sex == 1 ? '男' : row.sex == 0 ? '女' : '不详' }}
+        <template v-slot:wfkje>
+          <el-table-column label="未付款" width="150" v-slot="{ row }">
+            {{ wfkje(Number(row.yfhje), Number(row.yskje)) }}
           </el-table-column>
         </template>
       </lin-table>
@@ -56,6 +56,7 @@ import LinTable from '@/component/base/table/lin-table'
 import ModelForm from './model/model-form'
 import JeecgListMixin from '@/mixins/JeecgListMixin'
 import { get } from '@/lin/plugin/axios'
+import { accSub } from '@/utils/util'
 
 export default {
   components: {
@@ -67,13 +68,26 @@ export default {
     return {
       cellStyle: { 'text-align': 'center' },
       headerCellStyle: { 'text-align': 'center' },
-      tableColumn: [{ prop: 'name', label: '名字' }, { prop: 'phone', label: '电话' }, { prop: 'sex', slot: 'sex' }],
+      tableColumn: [
+        { prop: 'name', label: '名字' },
+        { prop: 'phone', label: '电话' },
+        { prop: 'jyje', label: '交易金额' },
+        { prop: 'yfhje', label: '已送货' },
+        { prop: 'ysje', label: '预收款' },
+        { prop: 'yfkje', label: '已收款' },
+        { prop: 'wfkje', slot: 'wfkje' },
+      ],
       operate: [],
       url: {
-        list: '/v1/demo',
-        delete: '/v1/demo/delete',
+        list: '/v1/client',
+        delete: '/v1/client/delete',
       },
     }
+  },
+  computed: {
+    wfkje(r1, r2) {
+      return accSub(r1, r2)
+    },
   },
   async mounted() {
     this.loading = true

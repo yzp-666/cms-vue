@@ -48,8 +48,8 @@ export default {
       dialogFormVisible: false,
       form: {},
       url: {
-        add: '/v1/demo', // post
-        edit: '/v1/demo', // put '/:id'
+        add: '/v1/client', // post
+        edit: '/v1/client', // put '/:id'
       },
     }
   },
