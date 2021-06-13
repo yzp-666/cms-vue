@@ -41,7 +41,7 @@
         <!--    :highlightCurrentRow="true"    -->
         <template v-slot:wfkje>
           <el-table-column label="未付款" width="150" v-slot="{ row }">
-            {{ wfkje(Number(row.yfhje), Number(row.yskje)) }}
+            {{ wfkje(Number(row.yfhje), Number(row.yfkje)) }}
           </el-table-column>
         </template>
       </lin-table>
@@ -55,7 +55,7 @@
 import LinTable from '@/component/base/table/lin-table'
 import ModelForm from './model/model-form'
 import JeecgListMixin from '@/mixins/JeecgListMixin'
-import { get } from '@/lin/plugin/axios'
+// import { get } from '@/lin/plugin/axios'
 import { accSub } from '@/utils/util'
 
 export default {
@@ -84,11 +84,6 @@ export default {
       },
     }
   },
-  computed: {
-    wfkje(r1, r2) {
-      return accSub(r1, r2)
-    },
-  },
   async mounted() {
     this.loading = true
     this.operate = [
@@ -108,28 +103,31 @@ export default {
     goToGroupEditPage(row, index) {
       console.log(row, index)
     },
-    loadData(arg) {
-      if (!this.url.list) {
-        this.$message.error('请设置url.list属性!')
-        return
-      }
-      // 加载数据 若传入参数1则加载第一页的内容
-      if (arg === 1) {
-        this.pagination.currentPage = 1
-      }
-      const params = this.getQueryParams() // 查询条件
-      this.loading = true
-      get(this.url.list, params).then(res => {
-        if (res.rows && Array.isArray(res.rows)) {
-          res.rows.forEach((item, index) => {
-            item.key = item.id ? item.id : index
-          })
-        }
-        this.tableData = res.rows
-        this.pagination.pageTotal = res.count
-        this.loading = false
-      })
+    wfkje(r1, r2) {
+      return accSub(r1, r2)
     },
+    // loadData(arg) {
+    //   if (!this.url.list) {
+    //     this.$message.error('请设置url.list属性!')
+    //     return
+    //   }
+    //   // 加载数据 若传入参数1则加载第一页的内容
+    //   if (arg === 1) {
+    //     this.pagination.currentPage = 1
+    //   }
+    //   const params = this.getQueryParams() // 查询条件
+    //   this.loading = true
+    //   get(this.url.list, params).then(res => {
+    //     if (res.rows && Array.isArray(res.rows)) {
+    //       res.rows.forEach((item, index) => {
+    //         item.key = item.id ? item.id : index
+    //       })
+    //     }
+    //     this.tableData = res.rows
+    //     this.pagination.pageTotal = res.count
+    //     this.loading = false
+    //   })
+    // },
   },
 }
 </script>

@@ -1,21 +1,44 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
-    <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
-      <el-form-item label="名字" prop="name" :label-width="formLabelWidth">
+    <el-form :model="form" :rules="rules" ref="form" size="mini" style="padding: 0 30px">
+      <el-form-item label="客户名" prop="name" :label-width="formLabelWidth">
         <el-input :disabled="disableSubmit" v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
         <el-input :disabled="disableSubmit" v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="sex" :label-width="formLabelWidth">
-        <el-radio-group :disabled="disableSubmit" v-model="form.sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="0">女</el-radio>
-          <el-radio :label="2">不详</el-radio>
-        </el-radio-group>
-        <!--        <el-select v-model="form.unit" placeholder="">-->
-        <!--          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>-->
-        <!--        </el-select>-->
+      <el-form-item label="客户类型" prop="type" :label-width="formLabelWidth">
+        <!--        <el-radio-group :disabled="disableSubmit" v-model="form.type">-->
+        <!--          <el-radio :label="1">服装</el-radio>-->
+        <!--          <el-radio :label="2">二批</el-radio>-->
+        <!--          <el-radio :label="3">制衣厂</el-radio>-->
+        <!--        </el-radio-group>-->
+        <el-select v-model="form.type" :disabled="disableSubmit" placeholder="">
+          <el-option label="服装" value="1"></el-option>
+          <el-option label="二批" value="2"></el-option>
+          <el-option label="制衣厂" value="3"></el-option>
+          <!--          <el-option-->
+          <!--            v-for="item in options"-->
+          <!--            :key="item.value"-->
+          <!--            :label="item.label"-->
+          <!--            :value="item.value">-->
+          <!--          </el-option>-->
+        </el-select>
+      </el-form-item>
+      <el-form-item label="预欠款金额" prop="yqkje" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.yqkje"></el-input>
+      </el-form-item>
+      <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.fax"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.email"></el-input>
+      </el-form-item>
+      <el-form-item label="地址" prop="site" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.site"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="bz" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.bz"></el-input>
       </el-form-item>
     </el-form>
 
@@ -25,7 +48,6 @@
     </div>
   </el-dialog>
 </template>
-
 <script>
 import { put, post } from '@/lin/plugin/axios' // 请求方法
 // import UploadImgs from '@/component/base/upload-image/index'
@@ -47,6 +69,9 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {},
+      rules: {
+        name: [{ required: true, message: '请输入客户名称', trigger: 'blur' }],
+      },
       url: {
         add: '/v1/client', // post
         edit: '/v1/client', // put '/:id'
