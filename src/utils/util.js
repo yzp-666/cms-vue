@@ -246,5 +246,5 @@ export function accDiv(arg1, arg2) {
   const r1 = Number(arg1.toString().replace('.', ''))
   const r2 = Number(arg2.toString().replace('.', ''))
   // eslint-disable-next-line no-restricted-properties
-  return (r1 / r2) * Math.pow(10 ** (t2 - t1))
+  return (r1 / r2) * Math.pow(10, t2 - t1)
 }
