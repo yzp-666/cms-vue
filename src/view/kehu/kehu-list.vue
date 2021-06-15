@@ -1,12 +1,28 @@
 <template>
-  <div>
+  <div class="container">
     <!-- 列表页面 -->
-    <div class="container">
-      <div class="header"><div class="title">客户列表</div></div>
-      <!-- 顶部按钮-->
-      <div class="header-handle">
-        <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
-
+    <div class="header"><div class="title">客户列表</div></div>
+    <!--搜索表单-->
+    <el-form size="small" :inline="true" :model="queryParam" class="demo-form-inline">
+      <el-form-item label="客户名">
+        <el-input v-model="queryParam.user" placeholder="客户名"></el-input>
+      </el-form-item>
+      <el-form-item label="电话">
+        <el-input v-model="queryParam.phone" placeholder="电话"></el-input>
+      </el-form-item>
+      <el-form-item label="客户类型">
+        <el-input v-model="queryParam.type" placeholder="客户类型"></el-input>
+      </el-form-item>
+      <el-form-item label="状态">
+        <el-input v-model="queryParam.state" placeholder="状态"></el-input>
+      </el-form-item>
+    </el-form>
+    <!-- 顶部按钮-->
+    <div class="header-handle">
+      <div class="handle-left">
+        <el-button type="primary" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+      </div>
+      <div class="handle-right">
         <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
         <el-dropdown @command="handleCommand" style="margin-left: 10px">
           <el-button icon="el-icon-arrow-down">
@@ -18,34 +34,34 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <!-- 表格 -->
-      <lin-table
-        ref="table"
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :border="true"
-        :index="1"
-        :type="'selection'"
-        :cellStyle="cellStyle"
-        :headerCellStyle="headerCellStyle"
-        @handleEdit="handleEdit"
-        @handleSee="handleSee"
-        @handleDelete="handleDelete"
-        @goToGroupEditPage="goToGroupEditPage"
-        v-loading="loading"
-        :pagination="pagination"
-        @handleSizeChange="handleSizeChange"
-        @currentChange="currentChange"
-      >
-        <!--    :highlightCurrentRow="true"    -->
-        <template v-slot:wfkje>
-          <el-table-column label="未付款" width="150" v-slot="{ row }">
-            {{ wfkje(Number(row.yfhje), Number(row.yfkje)) }}
-          </el-table-column>
-        </template>
-      </lin-table>
     </div>
+    <!-- 表格 -->
+    <lin-table
+      ref="table"
+      :tableColumn="tableColumn"
+      :tableData="tableData"
+      :operate="operate"
+      :border="true"
+      :index="1"
+      :type="'selection'"
+      :cellStyle="cellStyle"
+      :headerCellStyle="headerCellStyle"
+      @handleEdit="handleEdit"
+      @handleSee="handleSee"
+      @handleDelete="handleDelete"
+      @goToGroupEditPage="goToGroupEditPage"
+      v-loading="loading"
+      :pagination="pagination"
+      @handleSizeChange="handleSizeChange"
+      @currentChange="currentChange"
+    >
+      <!--    :highlightCurrentRow="true"    -->
+      <template v-slot:wfkje>
+        <el-table-column label="未付款" width="150" v-slot="{ row }">
+          {{ wfkje(Number(row.yfhje), Number(row.yfkje)) }}
+        </el-table-column>
+      </template>
+    </lin-table>
 
     <model-form ref="modalForm" @ok="modalFormOk"></model-form>
   </div>
@@ -134,7 +150,12 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  padding: 0 30px;
+  min-height: 100%;
+  padding: 0 30px 20px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.2);
 
   .header {
     display: flex;
@@ -157,6 +178,9 @@ export default {
   }
 
   .header-handle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
   }
 }

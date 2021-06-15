@@ -21,6 +21,8 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  padding: 10px;
+  box-sizing: border-box;
   .wrapper {
     width: 100%;
     height: 100%;

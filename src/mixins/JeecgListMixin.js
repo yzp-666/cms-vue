@@ -44,6 +44,10 @@ export default {
         this.loading = false
       })
     },
+    // 搜索
+    onSubmit() {
+      this.loadData()
+    },
     // 条数改变
     handleSizeChange(val) {
       this.$set(this.pagination, 'pageSize', val)

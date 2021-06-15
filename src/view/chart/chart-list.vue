@@ -3,10 +3,17 @@
     <!-- 列表页面 -->
     <div class="container">
       <div class="header"><div class="title">报表</div></div>
+      <!--搜索表单-->
+      <el-form :inline="true" :model="queryParam" class="demo-form-inline">
+        <el-form-item label="审批人">
+          <el-input v-model="queryParam.user" placeholder="审批人"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+        </el-form-item>
+      </el-form>
       <!-- 顶部按钮-->
       <div class="header-handle">
-        <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
-
         <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
         <el-dropdown @command="handleCommand" style="margin-left: 10px">
           <el-button icon="el-icon-arrow-down">
