@@ -48,6 +48,11 @@ export default {
     onSubmit() {
       this.loadData()
     },
+    // 重置
+    resetForm(formName) {
+      this.queryParam = {}
+      this.$refs[formName].resetFields()
+    },
     // 条数改变
     handleSizeChange(val) {
       this.$set(this.pagination, 'pageSize', val)
