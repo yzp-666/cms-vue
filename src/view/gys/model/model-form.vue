@@ -1,21 +1,47 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
-    <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
-      <el-form-item label="名字" prop="name" :label-width="formLabelWidth">
-        <el-input :disabled="disableSubmit" v-model="form.name"></el-input>
+    <el-form :model="form" :rules="rules" ref="form" size="mini" style="padding: 0 30px">
+      <el-form-item label="供应商名" prop="name" :label-width="formLabelWidth">
+        <el-input placeholder="请输入供应商名" :disabled="disableSubmit" v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
-        <el-input :disabled="disableSubmit" v-model="form.phone"></el-input>
+        <el-input placeholder="请输入供应商电话" :disabled="disableSubmit" v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="sex" :label-width="formLabelWidth">
-        <el-radio-group :disabled="disableSubmit" v-model="form.sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="0">女</el-radio>
-          <el-radio :label="2">不详</el-radio>
-        </el-radio-group>
-        <!--        <el-select v-model="form.unit" placeholder="">-->
-        <!--          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>-->
-        <!--        </el-select>-->
+      <el-form-item label="供应商类型" prop="type" :label-width="formLabelWidth">
+        <el-select placeholder="请选择供应商类型" v-model="form.type" :disabled="disableSubmit">
+          <el-option label="布行" value="1"></el-option>
+          <el-option label="工厂" value="2"></el-option>
+          <el-option label="加工" value="3"></el-option>
+          <!--          <el-option-->
+          <!--            v-for="item in options"-->
+          <!--            :key="item.value"-->
+          <!--            :label="item.label"-->
+          <!--            :value="item.value">-->
+          <!--          </el-option>-->
+        </el-select>
+      </el-form-item>
+      <el-form-item label="预欠款金额" prop="yqkje" :label-width="formLabelWidth">
+        <el-input placeholder="请输入预欠款金额" :disabled="disableSubmit" v-model="form.yqkje"></el-input>
+      </el-form-item>
+      <el-form-item label="传真" prop="fax" :label-width="formLabelWidth">
+        <el-input placeholder="请输入客户传真" :disabled="disableSubmit" v-model="form.fax"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱" prop="email" :label-width="formLabelWidth">
+        <el-input placeholder="请输入客户邮箱" :disabled="disableSubmit" v-model="form.email"></el-input>
+      </el-form-item>
+      <el-form-item label="地址" prop="site" :label-width="formLabelWidth">
+        <el-input placeholder="请输入客户地址" :disabled="disableSubmit" v-model="form.site"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="bz" :label-width="formLabelWidth">
+        <el-input
+          type="textarea"
+          placeholder="请填写备注"
+          :disabled="disableSubmit"
+          v-model="form.bz"
+          maxlength="200"
+          show-word-limit
+        >
+        </el-input>
       </el-form-item>
     </el-form>
 
@@ -25,7 +51,6 @@
     </div>
   </el-dialog>
 </template>
-
 <script>
 import { put, post } from '@/lin/plugin/axios' // 请求方法
 // import UploadImgs from '@/component/base/upload-image/index'
@@ -47,9 +72,12 @@ export default {
       formLabelWidth: '120px',
       dialogFormVisible: false,
       form: {},
+      rules: {
+        name: [{ required: true, message: '请输入供应商名称', trigger: 'blur' }],
+      },
       url: {
-        add: '/v1/demo', // post
-        edit: '/v1/demo', // put '/:id'
+        add: '/v1/supplier', // post
+        edit: '/v1/supplier', // put '/:id'
       },
     }
   },

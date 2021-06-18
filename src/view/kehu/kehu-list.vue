@@ -87,10 +87,11 @@ export default {
   mixins: [JeecgListMixin],
   data() {
     return {
+      name: '客户列表页面',
       cellStyle: { 'text-align': 'center' },
       headerCellStyle: { 'text-align': 'center' },
       tableColumn: [
-        { prop: 'name', label: '名字' },
+        { prop: 'name', label: '客户名' },
         { prop: 'phone', label: '电话' },
         { prop: 'jyje', label: '交易金额' },
         { prop: 'yfhje', label: '已送货' },
@@ -115,7 +116,7 @@ export default {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        permission: '删除图书',
+        permission: '删除客户',
       },
     ]
     this.loading = false
@@ -127,65 +128,10 @@ export default {
     wfkje(r1, r2) {
       return accSub(r1, r2)
     },
-    // loadData(arg) {
-    //   if (!this.url.list) {
-    //     this.$message.error('请设置url.list属性!')
-    //     return
-    //   }
-    //   // 加载数据 若传入参数1则加载第一页的内容
-    //   if (arg === 1) {
-    //     this.pagination.currentPage = 1
-    //   }
-    //   const params = this.getQueryParams() // 查询条件
-    //   this.loading = true
-    //   get(this.url.list, params).then(res => {
-    //     if (res.rows && Array.isArray(res.rows)) {
-    //       res.rows.forEach((item, index) => {
-    //         item.key = item.id ? item.id : index
-    //       })
-    //     }
-    //     this.tableData = res.rows
-    //     this.pagination.pageTotal = res.count
-    //     this.loading = false
-    //   })
-    // },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-.container {
-  padding: 0 30px 20px;
-  border-radius: 8px;
-  box-sizing: border-box;
-  background-color: #ffffff;
-  box-shadow: 2px 5px 5px rgba(0, 0, 0, 0.2);
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .title {
-      height: 59px;
-      line-height: 59px;
-      color: $parent-title-color;
-      font-size: 16px;
-      font-weight: 500;
-    }
-  }
-
-  .pagination {
-    display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-  }
-
-  .header-handle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-}
+@import 'src/assets/style/base.scss';
 </style>
