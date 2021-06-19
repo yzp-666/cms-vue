@@ -7,7 +7,7 @@
 import { Line } from '@antv/g2plot'
 
 export default {
-  name: 'Line',
+  name: 'CmsLine',
   data() {
     return {
       data: [

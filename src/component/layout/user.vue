@@ -2,7 +2,9 @@
   <div class="user">
     <el-dropdown>
       <span class="el-dropdown-link">
-        <div class="nav-avatar"><img :src="user.avatar || defaultAvatar" alt="头像" /></div>
+        <div class="nav-avatar">
+          <img v-if="user.avatar || defaultAvatar" :src="user.avatar || defaultAvatar" alt="头像" />
+        </div>
       </span>
       <el-dropdown-menu slot="dropdown" class="user-box">
         <div class="user-info">
