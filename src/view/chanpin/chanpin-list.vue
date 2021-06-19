@@ -1,52 +1,47 @@
 <template>
-  <div>
-    <!-- 列表页面 -->
-    <div class="container">
-      <div class="header"><div class="title">产品列表</div></div>
-      <!-- 顶部按钮-->
-      <div class="header-handle">
-        <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
+  <!-- 列表页面 -->
+  <div class="container">
+    <div class="header"><div class="title">产品列表</div></div>
+    <!-- 顶部按钮-->
+    <div class="header-handle">
+      <el-button type="primary" @click="loadData" icon="el-icon-search">搜索</el-button>
 
-        <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
-        <el-dropdown @command="handleCommand" style="margin-left: 10px">
-          <el-button icon="el-icon-arrow-down">
-            批量操作
-          </el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="delete">批量删除</el-dropdown-item>
-            <!--            <el-dropdown-item command="export" >导出</el-dropdown-item>-->
-          </el-dropdown-menu>
-        </el-dropdown>
-      </div>
-      <!-- 表格 -->
-      <lin-table
-        ref="table"
-        :tableColumn="tableColumn"
-        :tableData="tableData"
-        :operate="operate"
-        :border="true"
-        :index="1"
-        :type="'selection'"
-        :cellStyle="cellStyle"
-        :headerCellStyle="headerCellStyle"
-        @handleEdit="handleEdit"
-        @handleSee="handleSee"
-        @handleDelete="handleDelete"
-        @goToGroupEditPage="goToGroupEditPage"
-        v-loading="loading"
-        :pagination="pagination"
-        @handleSizeChange="handleSizeChange"
-        @currentChange="currentChange"
-      >
-        <!--    :highlightCurrentRow="true"    -->
-        <template v-slot:sex>
-          <el-table-column label="性别" width="150" v-slot="{ row }">
-            {{ row.sex == 1 ? '男' : row.sex == 0 ? '女' : '不详' }}
-          </el-table-column>
-        </template>
-      </lin-table>
+      <el-button type="primary" @click="handleAdd" icon="el-icon-plus">新增</el-button>
+      <!--      <el-dropdown @command="handleCommand" style="margin-left: 10px">-->
+      <!--        <el-button icon="el-icon-arrow-down">-->
+      <!--          批量操作-->
+      <!--        </el-button>-->
+      <!--        <el-dropdown-menu slot="dropdown">-->
+      <!--          <el-dropdown-item command="delete">批量删除</el-dropdown-item>-->
+      <!--          &lt;!&ndash;            <el-dropdown-item command="export" >导出</el-dropdown-item>&ndash;&gt;-->
+      <!--        </el-dropdown-menu>-->
+      <!--      </el-dropdown>-->
     </div>
-
+    <!-- 表格 -->
+    <lin-table
+      ref="table"
+      :tableColumn="tableColumn"
+      :tableData="tableData"
+      :operate="operate"
+      :border="true"
+      :cellStyle="cellStyle"
+      :headerCellStyle="headerCellStyle"
+      @handleEdit="handleEdit"
+      @handleSee="handleSee"
+      @handleDelete="handleDelete"
+      @goToGroupEditPage="goToGroupEditPage"
+      v-loading="loading"
+      :pagination="pagination"
+      @handleSizeChange="handleSizeChange"
+      @currentChange="currentChange"
+    >
+      <!--    :highlightCurrentRow="true"    -->
+      <template v-slot:productImg>
+        <el-table-column label="图片" width="150" v-slot="{ row }">
+          <upload-imgs ref="uploadEle" :value="row.initData" />
+        </el-table-column>
+      </template>
+    </lin-table>
     <model-form ref="modalForm" @ok="modalFormOk"></model-form>
   </div>
 </template>
@@ -67,11 +62,15 @@ export default {
     return {
       cellStyle: { 'text-align': 'center' },
       headerCellStyle: { 'text-align': 'center' },
-      tableColumn: [{ prop: 'name', label: '名字' }, { prop: 'phone', label: '电话' }, { prop: 'sex', slot: 'sex' }],
+      tableColumn: [
+        { prop: 'productImg', slot: 'productImg' },
+        { prop: 'productName', label: '品名' },
+        { prop: 'sellingPrice', label: '售价' },
+      ],
       operate: [],
       url: {
-        list: '/v1/demo',
-        delete: '/v1/demo/delete',
+        list: '/v1/product',
+        delete: '/v1/product/delete',
       },
     }
   },
