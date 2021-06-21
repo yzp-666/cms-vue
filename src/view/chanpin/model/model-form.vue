@@ -1,21 +1,40 @@
 <template>
-  <el-dialog :title="title" :visible.sync="dialogFormVisible" :width="width">
+  <el-dialog :title="title" z-index="999" :visible.sync="dialogFormVisible" :width="width">
     <el-form :model="form" ref="form" size="mini" style="padding: 0 30px">
-      <el-form-item label="名字" prop="name" :label-width="formLabelWidth">
-        <el-input :disabled="disableSubmit" v-model="form.name"></el-input>
+      <el-form-item label="产品封面图" prop="surfacePlot" :label-width="formLabelWidth">
+        <UploadImgs v-if="form.initData" ref="uploadEle" :min-num="1" :max-num="1" :value="form.initData"> </UploadImgs>
       </el-form-item>
-      <el-form-item label="电话" prop="phone" :label-width="formLabelWidth">
+      <el-form-item label="产品名称" placeholder="请输入产品名称" prop="tradeName" :label-width="formLabelWidth">
         <el-input :disabled="disableSubmit" v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="sex" :label-width="formLabelWidth">
-        <el-radio-group :disabled="disableSubmit" v-model="form.sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="0">女</el-radio>
-          <el-radio :label="2">不详</el-radio>
-        </el-radio-group>
+      <el-form-item label="单位" prop="unit" :label-width="formLabelWidth">
+        <el-select placeholder="请选择单位" v-model="form.unit" :disabled="disableSubmit">
+          <el-option label="kg" value="1"></el-option>
+          <el-option label="码" value="2"></el-option>
+          <el-option label="条" value="3"></el-option>
+          <el-option label="个" value="4"></el-option>
+        </el-select>
         <!--        <el-select v-model="form.unit" placeholder="">-->
         <!--          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>-->
         <!--        </el-select>-->
+      </el-form-item>
+      <el-form-item label="幅宽克重" prop="widthWeight" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.widthWeight"></el-input>
+      </el-form-item>
+      <el-form-item label="产品类型" prop="type" :label-width="formLabelWidth">
+        <el-select placeholder="请选择产品类型" v-model="form.unit" :disabled="disableSubmit">
+          <el-option label="采购类" value="1"></el-option>
+          <el-option label="加工类" value="2"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item v-if="form.type == 1" label="采购价格" prop="price" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.price"></el-input>
+      </el-form-item>
+      <el-form-item label="销售价格" prop="price" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.price"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="price" :label-width="formLabelWidth">
+        <el-input :disabled="disableSubmit" v-model="form.price"></el-input>
       </el-form-item>
     </el-form>
 
@@ -28,11 +47,11 @@
 
 <script>
 import { put, post } from '@/lin/plugin/axios' // 请求方法
-// import UploadImgs from '@/component/base/upload-image/index'
+import UploadImgs from '@/component/base/upload-image/index'
 
 export default {
   components: {
-    // UploadImgs,
+    UploadImgs,
   },
   props: {
     width: {
@@ -46,7 +65,9 @@ export default {
       title: '新增',
       formLabelWidth: '120px',
       dialogFormVisible: false,
-      form: {},
+      form: {
+        initData: [],
+      },
       url: {
         add: '/v1/product', // post
         edit: '/v1/product', // put '/:id'
@@ -66,7 +87,7 @@ export default {
     // 添加
     add() {
       this.dialogFormVisible = true
-      this.form = {}
+      this.form = { initData: [] }
     },
     // 关闭
     close() {
