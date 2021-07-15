@@ -64,8 +64,9 @@ export default {
       headerCellStyle: { 'text-align': 'center' },
       tableColumn: [
         { prop: 'productImg', slot: 'productImg' },
-        { prop: 'productName', label: '品名' },
-        { prop: 'sellingPrice', label: '售价' },
+        { prop: 'trade_code', label: '编号' },
+        { prop: 'trade_name', label: '品名' },
+        { prop: 'sale_price', label: '售价' },
       ],
       operate: [],
       url: {
@@ -84,7 +85,7 @@ export default {
         name: '删除',
         func: 'handleDelete',
         type: 'danger',
-        permission: '删除图书',
+        permission: '删除产品',
       },
     ]
     this.loading = false
